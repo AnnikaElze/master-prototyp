@@ -39,9 +39,18 @@
 .feedbackGridVideoItem {
 }
 
+.feedbackCanvas {
+    position: absolute;
+    margin-left: -48.5vw;
+    height: 48vh;
+    width: 48.5vw;
+    margin-top: 0.5vh;
+}
+
 /* Viewer */
 .feedbackGridViewer {
     height: 32vh;
+    margin-top: 2vh;
     margin-bottom: 2vh;
     display: grid;
     grid-template-columns: 48.5vw 48.5vw;

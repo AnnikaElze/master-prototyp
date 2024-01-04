@@ -1,25 +1,41 @@
-import logo from './logo.svg';
 import './App.css';
+import {ThemeProvider} from "@emotion/react";
+import "@fontsource/roboto-mono";
+import "@fontsource/roboto";
+import Homepage from "./components/Homepage";
+import theme from "./components/Theme";
+import {useState} from "react";
+import Feedback from "./components/Feedback";
+
+let rootStyle = {
+  backgroundColor: theme.palette.background,
+  height: '100vh',
+}
 
 function App() {
+  const [root, setRoot] = useState(true);
+  const [usecase, setUsecase] = useState("");
+
+  let handleRoot = (usecase) => {
+      setUsecase(usecase);
+      setRoot(!root);
+  }
+
+  let rootDecision = () => {
+    if (root) {
+      return <Homepage handleRoot={handleRoot}/>
+    } else {
+      return <Feedback handleRoot={handleRoot} usecase={usecase}/>}
+  }
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="App" style={rootStyle}>
+      <ThemeProvider theme={theme}>
+        {rootDecision()}
+      </ThemeProvider>
     </div>
   );
 }
+
 
 export default App;

@@ -6,15 +6,15 @@ function FeedbackViewer (props) {
       <div className="feedbackGridViewer">
         <div className="feedbackGridViewerItem" id="feedbackViewer1">
           <div className="feedbackText">
-            <FeedbackTextFile severity={"warning"} info={"Hallo du kranke Nudel!"}/>
+            <FeedbackTextFile severity={"warning"} info={"Fehlerhinweis"}/>
           </div>
           <div className="feedbackText">
-            <FeedbackTextFile severity={"info"} info={"Hallo du kranke Nudel!"}/>
+            <FeedbackTextFile severity={"info"} info={"Infotext"}/>
           </div>
         </div>
         <div className="feedbackGridViewerItem" id="feedbackViewer2">
           <div className="feedbackText">
-            <FeedbackTextFile severity={"success"} info={"Hallo du kranke Nudel!"}/>
+            <FeedbackTextFile severity={"success"} info={"Erfolgreiche Korrektur"}/>
           </div>
         </div>
       </div>

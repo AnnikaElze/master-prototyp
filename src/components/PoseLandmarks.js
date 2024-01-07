@@ -1,6 +1,6 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
-import pose_landmarker_task from "../shared/models/pose_landmarker_full.task";
+import pose_landmarker_task from "../shared/models/pose_landmarker_lite.task";
 
 function PoseLandmarks (props) {
   const videoRef = useRef(null);
@@ -10,7 +10,7 @@ function PoseLandmarks (props) {
     let poseLandmarker;
     let animationFrameId;
 
-    const initializeHandDetection = async () => {
+    const initializePoseDetection = async () => {
       try {
         const vision = await FilesetResolver.forVisionTasks(
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
@@ -40,7 +40,7 @@ function PoseLandmarks (props) {
           const y = landmark.y * canvas.height;
 
           ctx.beginPath();
-          ctx.arc(x, y, 2, 0, 2 * Math.PI); // Draw a circle for each landmark
+          ctx.arc(x, y, 2, 0, 2 * Math.PI);
           ctx.fill();
         });
       });
@@ -61,7 +61,7 @@ function PoseLandmarks (props) {
       try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
         videoRef.current.srcObject = stream;
-        await initializeHandDetection();
+        await initializePoseDetection();
       } catch (error) {
         console.error("Error accessing webcam:", error);
       }

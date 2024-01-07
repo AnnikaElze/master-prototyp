@@ -1,14 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import { FilesetResolver, HandLandmarker } from "@mediapipe/tasks-vision";
-import hand_landmarker_task from '../shared/models/hand_landmarker.task';
+import React, {useEffect, useRef, useState} from "react";
+import {FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
+import pose_landmarker_task from "../shared/models/pose_landmarker_full.task";
 
-function HandDetection() {
+function PoseLandmarks (props) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
-  const [handPresence, setHandPresence] = useState(null);
 
   useEffect(() => {
-    let handLandmarker;
+    let poseLandmarker;
     let animationFrameId;
 
     const initializeHandDetection = async () => {
@@ -16,16 +15,16 @@ function HandDetection() {
         const vision = await FilesetResolver.forVisionTasks(
           "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@latest/wasm",
         );
-        handLandmarker = await HandLandmarker.createFromOptions(
+        poseLandmarker = await PoseLandmarker.createFromOptions(
           vision, {
-            baseOptions: { modelAssetPath: hand_landmarker_task },
-            numHands: 2,
+            baseOptions: { modelAssetPath: pose_landmarker_task },
+            numPoses: 1,
             runningMode: "video"
           }
         );
-        detectHands();
+        detectPoses();
       } catch (error) {
-        console.error("Error initializing hand detection:", error);
+        console.error("Error initializing pose detection:", error);
       }
     };
 
@@ -41,23 +40,21 @@ function HandDetection() {
           const y = landmark.y * canvas.height;
 
           ctx.beginPath();
-          ctx.arc(x, y, 5, 0, 2 * Math.PI); // Draw a circle for each landmark
+          ctx.arc(x, y, 2, 0, 2 * Math.PI); // Draw a circle for each landmark
           ctx.fill();
         });
       });
     };
 
-    const detectHands = () => {
+    const detectPoses = () => {
       if (videoRef.current && videoRef.current.readyState >= 2) {
-        const detections = handLandmarker.detectForVideo(videoRef.current, performance.now());
-        setHandPresence(detections.handednesses.length > 0);
+        const detections = poseLandmarker.detectForVideo(videoRef.current, performance.now());
 
-        // Assuming detections.landmarks is an array of landmark objects
         if (detections.landmarks) {
           drawLandmarks(detections.landmarks);
         }
       }
-      requestAnimationFrame(detectHands);
+      requestAnimationFrame(detectPoses);
     };
 
     const startWebcam = async () => {
@@ -76,8 +73,8 @@ function HandDetection() {
       if (videoRef.current && videoRef.current.srcObject) {
         videoRef.current.srcObject.getTracks().forEach(track => track.stop());
       }
-      if (handLandmarker) {
-        handLandmarker.close();
+      if (poseLandmarker) {
+        poseLandmarker.close();
       }
       if (animationFrameId) {
         cancelAnimationFrame(animationFrameId);
@@ -85,15 +82,14 @@ function HandDetection() {
     };
   }, []);
 
-  return (
+  return(
     <>
-      <h1>Is there a Hand? {handPresence ? "Yes" : "No"}</h1>
-      <div style={{ position: "relative" }}>
-        <video ref={videoRef} autoPlay playsInline ></video>
-        <canvas ref={canvasRef} style={{ backgroundColor: "black" , width:"600px", height:"480px"}}></canvas>
-      </div>
+      <video ref={videoRef} autoPlay playsInline className="feedbackWebcam"></video>
+      <canvas ref={canvasRef} className="feedbackCanvas"></canvas>
     </>
-  );
-};
+  )
+}
 
-export default HandDetection;
+export default PoseLandmarks;
+
+// style={{backgroundColor: "black", width: "600px", height: "480px"}}

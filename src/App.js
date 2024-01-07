@@ -6,7 +6,6 @@ import Homepage from "./components/Homepage";
 import theme from "./components/Theme";
 import {useState} from "react";
 import Feedback from "./components/Feedback";
-import HandDetection from "./components/HandDetection";
 
 let rootStyle = {
   backgroundColor: theme.palette.background,
@@ -31,10 +30,10 @@ function App() {
 
   return (
     <div className="App" style={rootStyle}>
-      {/*<ThemeProvider theme={theme}>*/}
-      {/*  {rootDecision()}*/}
-      {/*</ThemeProvider>*/}
-      <HandDetection/>
+      <ThemeProvider theme={theme}>
+        {rootDecision()}
+      </ThemeProvider>
+      {/*<HandDetection/>*/}
     </div>
   );
 }

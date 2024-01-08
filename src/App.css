@@ -49,8 +49,11 @@
 
 .feedbackCanvas {
     position: absolute;
-    height: 55vh;
-    width: 48.5vw;
+}
+
+.feedbackCanvasDisabled {
+    position: absolute;
+    z-index: -1;
 }
 
 /* Viewer */

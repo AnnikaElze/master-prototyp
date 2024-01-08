@@ -1,5 +1,5 @@
 import React, {useEffect, useRef} from "react";
-import {FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
+import {DrawingUtils, FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
 import pose_landmarker_task from "../shared/models/pose_landmarker_lite.task";
 
 function PoseLandmarks (props) {
@@ -19,7 +19,9 @@ function PoseLandmarks (props) {
           vision, {
             baseOptions: { modelAssetPath: pose_landmarker_task },
             numPoses: 1,
-            runningMode: "video"
+            runningMode: "video",
+            outputSegmentationMasks: true,
+            delegate: "GPU"
           }
         );
         detectPoses();
@@ -28,22 +30,28 @@ function PoseLandmarks (props) {
       }
     };
 
-    const drawLandmarks = (landmarksArray) => {
+    const drawLandmarks = (landmarks, mask) => {
       const canvas = canvasRef.current;
       const ctx = canvas.getContext('2d');
+      // const segmentationMask = mask.getAsFloat32Array();
+
+      ctx.canvas.width = Math.floor(window.innerWidth * 0.485);
+      ctx.canvas.height = Math.floor(window.innerHeight * 0.55);
+
+      const drawingUtils = new DrawingUtils(ctx);
+
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = 'white';
 
-      landmarksArray.forEach(landmarks => {
+      // ColorMapCreator(segmentationMask);
+
+      if (props.video === 1){
         landmarks.forEach(landmark => {
-          const x = landmark.x * canvas.width;
-          const y = landmark.y * canvas.height;
-
-          ctx.beginPath();
-          ctx.arc(x, y, 2, 0, 2 * Math.PI);
-          ctx.fill();
+          drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {color: 'white', lineWidth: 1});
+          drawingUtils.drawLandmarks(landmark, {color: 'white', radius: 1});
         });
-      });
+      } else {
+        // drawingUtils.drawCategoryMask(mask, )
+      }
     };
 
     const detectPoses = () => {
@@ -51,7 +59,7 @@ function PoseLandmarks (props) {
         const detections = poseLandmarker.detectForVideo(videoRef.current, performance.now());
 
         if (detections.landmarks) {
-          drawLandmarks(detections.landmarks);
+          drawLandmarks(detections.landmarks, detections.segmentationMasks);
         }
       }
       requestAnimationFrame(detectPoses);
@@ -82,14 +90,29 @@ function PoseLandmarks (props) {
     };
   }, []);
 
-  return(
+  function feedbackDecision(feedbackTypes) {
+    if (feedbackTypes.includes('overlay')){
+      return (
+        <>
+          <video ref={videoRef} autoPlay playsInline className="feedbackWebcam"></video>
+          <canvas ref={canvasRef} className="feedbackCanvas"></canvas>
+        </>
+      )
+    } else {
+      return (
+        <>
+          <video ref={videoRef} autoPlay playsInline className="feedbackWebcam"></video>
+          <canvas ref={canvasRef} className="feedbackCanvasDisabled"></canvas>
+        </>
+      )
+    }
+  }
+
+  return (
     <>
-      <video ref={videoRef} autoPlay playsInline className="feedbackWebcam"></video>
-      <canvas ref={canvasRef} className="feedbackCanvas"></canvas>
+      {feedbackDecision(props.feedbackTypes)}
     </>
   )
 }
 
 export default PoseLandmarks;
-
-// style={{backgroundColor: "black", width: "600px", height: "480px"}}

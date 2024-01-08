@@ -15,8 +15,8 @@ function Feedback (props) {
     <>
       <div className="feedbackGrid">
         <FeedbackHeader handleRoot={props.handleRoot} usecase={props.usecase}/>
-        <FeedbackVideo usecase={props.usecase}/>
-        <FeedbackViewer usecase={props.usecase}/>
+        <FeedbackVideo usecase={props.usecase} feedbackTypes={feedbackTypes}/>
+        <FeedbackViewer usecase={props.usecase} feedbackTypes={feedbackTypes}/>
         <FeedbackController usecase={props.usecase} feedbackTypes={feedbackTypes} handleFeedbackType={handleFeedbackType}/>
       </div>
     </>

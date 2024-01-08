@@ -6,10 +6,10 @@ function FeedbackVideo (props) {
     <>
       <div className="feedbackGridVideo">
         <div className="feedbackGridVideoItem">
-          <PoseLandmarks video={1}/>
+          <PoseLandmarks video={1} feedbackTypes={props.feedbackTypes}/>
         </div>
         <div className="feedbackGridVideoItem">
-          <PoseLandmarks video={2}/>
+          <PoseLandmarks video={2} feedbackTypes={props.feedbackTypes}/>
         </div>
       </div>
     </>

@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {DrawingUtils, FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
-import pose_landmarker_task from "../shared/models/pose_landmarker_lite.task";
+import pose_landmarker_task from "../../shared/models/pose_landmarker_lite.task";
 
 function PoseLandmarks (props) {
   const videoRef = useRef(null);
@@ -9,6 +9,10 @@ function PoseLandmarks (props) {
   useEffect(() => {
     let poseLandmarker;
     let animationFrameId;
+
+    const constraints = {
+      video: {deviceId: {exact: props.camera}}
+    }
 
     const initializePoseDetection = async () => {
       try {
@@ -67,7 +71,7 @@ function PoseLandmarks (props) {
 
     const startWebcam = async () => {
       try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const stream = await navigator.mediaDevices.getUserMedia(constraints);
         videoRef.current.srcObject = stream;
         await initializePoseDetection();
       } catch (error) {
@@ -88,6 +92,7 @@ function PoseLandmarks (props) {
         cancelAnimationFrame(animationFrameId);
       }
     };
+
   }, []);
 
   function feedbackDecision(feedbackTypes) {

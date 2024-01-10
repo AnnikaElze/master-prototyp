@@ -45,6 +45,7 @@
     height: 55vh;
     width: 48.5vw;
     object-fit: cover;
+    border-radius: 5px;
 }
 
 .feedbackCanvas {
@@ -54,6 +55,10 @@
 .feedbackCanvasDisabled {
     position: absolute;
     z-index: -1;
+}
+
+.cameraSelection {
+    position: absolute !important;
 }
 
 /* Viewer */

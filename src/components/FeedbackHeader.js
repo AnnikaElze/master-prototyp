@@ -2,26 +2,33 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogTitle from '@mui/material/DialogTitle';
 import HomeIcon from '@mui/icons-material/Home';
-import {useState} from "react";
+import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {IconButton, Typography} from "@mui/material";
+import FeedbackController from "./header/FeedbackController";
+import {light} from "@mui/material/styles/createPalette";
+import {hover} from "@testing-library/user-event/dist/hover";
 
 function FeedbackHeader (props) {
   return(
     <>
-      <div className="feedbackGridHeader">
-        <div className="feedbackGridHeaderItem feedbackGridHeaderItemTitle">
-          <Typography variant={"h1"}>{props.usecase}</Typography>
-        </div>
-        <div className="feedbackGridHeaderItem feedbackGridHeaderItemButton">
-          <RootButton usecase={"Home"} handleRoot={props.handleRoot}/>
+      <div className="header">
+        <div className="headerGrid">
+          <div className="headerGridItem headerTitle">
+            <RootButton usecase={"Home"} handleRoot={props.handleRoot}/>
+            <Typography variant={"h1"} className="titleText">{props.usecase}</Typography>
+          </div>
+          <FeedbackController usecase={props.usecase} feedbackTypes={props.feedbackTypes}
+                                handleFeedbackType={props.handleFeedbackType}
+                                handleCamera1={props.handleCamera1} camera1={props.camera1}
+                                handleCamera2={props.handleCamera2} camera2={props.camera2}/>
         </div>
       </div>
     </>
   )
 }
 
-function RootButton (props) {
+function RootButton(props) {
   const [open, setOpen] = useState(false);
 
   const handleClickOpen = () => {
@@ -30,18 +37,19 @@ function RootButton (props) {
 
   const handleClose = (continueTraining) => {
     setOpen(false);
-    if (!continueTraining){
+    if (!continueTraining) {
       props.handleRoot(props.usecase);
     }
   };
 
   return (
     <>
-      <IconButton color="primary" onClick={handleClickOpen}><HomeIcon/></IconButton>
+      <IconButton onClick={handleClickOpen} ><HomeIcon className="controlIcon"/></IconButton>
       <Dialog open={open} onClose={handleClose} disableBackdropClick={true}
               PaperProps={{
                 style: {
-                  backgroundColor: '#FCFCFC',
+                  color: '#E6E6E6',
+                  backgroundColor: '#262626',
                 },
               }}
       >

@@ -1,6 +1,6 @@
 import FeedbackHeader from "./FeedbackHeader";
 import FeedbackViewer from "./FeedbackViewer";
-import FeedbackController from "./FeedbackController";
+import FeedbackController from "./header/FeedbackController";
 import FeedbackVideo from "./FeedbackVideo";
 import React, {useState} from "react";
 
@@ -23,14 +23,12 @@ function Feedback (props) {
 
   return(
     <>
-      <div className="feedbackGrid">
-        <FeedbackHeader handleRoot={props.handleRoot} usecase={props.usecase}/>
-        <FeedbackVideo usecase={props.usecase} feedbackTypes={feedbackTypes} camera1={camera1} camera2={camera2}/>
-        <FeedbackViewer usecase={props.usecase} feedbackTypes={feedbackTypes}/>
-        <FeedbackController usecase={props.usecase} feedbackTypes={feedbackTypes} handleFeedbackType={handleFeedbackType}
-                            handleCamera1={handleCamera1} camera1={camera1}
-                            handleCamera2={handleCamera2} camera2={camera2}/>
-      </div>
+      <FeedbackHeader handleRoot={props.handleRoot} usecase={props.usecase}
+                        feedbackTypes={feedbackTypes} handleFeedbackType={handleFeedbackType}
+                        handleCamera1={handleCamera1} camera1={camera1}
+                        handleCamera2={handleCamera2} camera2={camera2}/>
+      <FeedbackVideo usecase={props.usecase} feedbackTypes={feedbackTypes} camera1={camera1} camera2={camera2}/>
+      <FeedbackViewer usecase={props.usecase} feedbackTypes={feedbackTypes}/>
     </>
   )
 }

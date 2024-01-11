@@ -1,4 +1,4 @@
-import FeedbackTextFile from "./FeedbackTextFile";
+import FeedbackTextFile from "./text/FeedbackTextFile";
 
 function feedbackDecision (feedbackTypes) {
   if (feedbackTypes.includes('text')) {
@@ -7,15 +7,15 @@ function feedbackDecision (feedbackTypes) {
         <div className="feedbackGridViewer">
           <div className="feedbackGridViewerItem" id="feedbackViewer1">
             <div className="feedbackText">
-              <FeedbackTextFile severity={"warning"} info={"Fehlerhinweis"}/>
+              <FeedbackTextFile type={"warning"} info={"Fehlerhinweis"}/>
             </div>
             <div className="feedbackText">
-              <FeedbackTextFile severity={"info"} info={"Infotext"}/>
+              <FeedbackTextFile type={"info"} info={"Infotext"}/>
             </div>
           </div>
           <div className="feedbackGridViewerItem" id="feedbackViewer2">
             <div className="feedbackText">
-              <FeedbackTextFile severity={"success"} info={"Erfolgreiche Korrektur"}/>
+              <FeedbackTextFile type={"success"} info={"Erfolgreiche Korrektur"}/>
             </div>
           </div>
         </div>

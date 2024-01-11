@@ -3,56 +3,54 @@ import {createTheme} from "@mui/material";
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#37474F',
-      dark: '#37474F',
-      light: '#90A4AE',
-      contrastText: '#FCFCFC',
+      main: '#606060',
+      light: '#E6E6E6',
+      dark: '#2E2E2E',
     },
     secondary: {
       main: '#689F38',
-      dark: '#33691E',
-      light: '#9CCC65',
     },
     error: {
       main: '#D32F2F',
-      dark: '#B71C1C',
-      light: '#EF5350',
     },
-    background: '#FCFCFC',
+    background: '#262626',
   },
   typography: {
     h1: {
-      fontFamily: 'Roboto Mono',
-      fontWeight: 100,
+      color: '#E6E6E6',
+      fontFamily: 'UniversLTStd-BoldCn',
       fontSize: '20px',
       '@media (min-width:600px)': {
         fontSize: '28px',
       },
     },
     body1: {
-      fontFamily: 'Roboto',
-      fontWeight: 100,
+      fontFamily: 'UniversLTStd-Light',
+      color: '#E6E6E6',
       fontSize: '13px',
       '@media (min-width:600px)': {
         fontSize: '16px',
       },
     },
-    body2: {
-      fontFamily: 'Roboto',
-      fontWeight: 100,
-      fontSize: '11px',
-      '@media (min-width:600px)': {
-        fontSize: '14px',
-      },
-    },
     button: {
-      fontFamily: 'Roboto',
-      fontWeight: 'medium',
-      fontSize: '10px',
+      fontFamily: 'UniversLTStd-Light',
+      color: '#E6E6E6',
+      fontSize: '13px',
       '@media (min-width:600px)': {
-        fontSize: '13px',
+        fontSize: '16px',
       },
     }
+  },
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          '&:hover': {
+            backgroundColor: "#606060"
+          }
+        }
+      }
+    },
   }
 });
 

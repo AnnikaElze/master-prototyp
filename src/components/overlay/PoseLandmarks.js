@@ -10,6 +10,8 @@ function PoseLandmarks (props) {
     let poseLandmarker;
     let animationFrameId;
 
+    console.log('PoseLandmarks CameraID' + props.camera);
+
     const constraints = {
       video: {deviceId: {exact: props.camera}}
     }
@@ -54,7 +56,10 @@ function PoseLandmarks (props) {
           drawingUtils.drawLandmarks(landmark, {color: 'white', radius: 1});
         });
       } else {
-        // drawingUtils.drawCategoryMask(mask, )
+        landmarks.forEach(landmark => {
+          drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {color: 'white', lineWidth: 1});
+          drawingUtils.drawLandmarks(landmark, {color: 'white', radius: 1});
+        });
       }
     };
 

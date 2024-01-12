@@ -6,8 +6,6 @@ import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {IconButton, Typography} from "@mui/material";
 import FeedbackController from "./header/FeedbackController";
-import {light} from "@mui/material/styles/createPalette";
-import {hover} from "@testing-library/user-event/dist/hover";
 
 function FeedbackHeader (props) {
   return(

@@ -9,8 +9,8 @@ function Homepage (props) {
   return(
     <>
       <div style={homepageStyle}>
-        <RootButton usecase={"Stretching"} handleRoot={props.handleRoot}/>
-        <RootButton usecase={"Poledance"} handleRoot={props.handleRoot}/>
+        <RootButton usecase={"Quadrizeps Dehnung"} handleRoot={props.handleRoot}/>
+        <RootButton usecase={"Pole Handstand"} handleRoot={props.handleRoot}/>
       </div>
     </>
   )

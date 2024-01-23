@@ -4,7 +4,7 @@ import TextIcon from "@mui/icons-material/Message";
 import AudioIcon from "@mui/icons-material/VolumeUp";
 import SignalIcon from "@mui/icons-material/Notifications";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
-import theme from "../Theme";
+import theme from "../../Theme";
 
 function FeedbackTypeController(props) {
 

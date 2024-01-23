@@ -1,8 +1,7 @@
-import FeedbackHeader from "./FeedbackHeader";
-import FeedbackViewer from "./FeedbackViewer";
+import Navbar from "./feedback/Navbar";
+import TextViewer from "./feedback/TextViewer";
 import React, {useState} from "react";
-import PoseLandmarks from "./overlay/PoseLandmarks";
-import Button from "@mui/material/Button";
+import VideoViewer from "./feedback/VideoViewer";
 
 function Feedback (props) {
   const [feedbackTypes, setFeedbackTypes] = useState(() => ['overlay', 'text', 'audio', 'signal']);
@@ -31,22 +30,22 @@ function Feedback (props) {
     }, 3000);
   };
 
-  function loadVideo(videoID, cameraID, isReset) {
+  function loadVideo(perspective, cameraID, isReset) {
     if (isReset) {
       return null;
     } else {
       return (
-        <PoseLandmarks video={videoID} feedbackTypes={feedbackTypes} camera={cameraID}/>
+        <VideoViewer perspective={perspective} feedbackTypes={feedbackTypes} usecase={props.usecase} camera={cameraID}/>
       )
     }
   }
 
   return(
     <>
-      <FeedbackHeader handleRoot={props.handleRoot} usecase={props.usecase}
-                        feedbackTypes={feedbackTypes} handleFeedbackType={handleFeedbackType}
-                        handleCamera1={handleCamera1} camera1={camera1}
-                        handleCamera2={handleCamera2} camera2={camera2}/>
+      <Navbar handleRoot={props.handleRoot} usecase={props.usecase}
+              feedbackTypes={feedbackTypes} handleFeedbackType={handleFeedbackType}
+              handleCamera1={handleCamera1} camera1={camera1}
+              handleCamera2={handleCamera2} camera2={camera2}/>
       <div className="feedbackGridVideo">
         <div className="feedbackGridVideoItem">
           {loadVideo(1, camera1, reset1)}
@@ -55,7 +54,7 @@ function Feedback (props) {
           {loadVideo(2, camera2, reset2)}
         </div>
       </div>
-      <FeedbackViewer usecase={props.usecase} feedbackTypes={feedbackTypes}/>
+      <TextViewer usecase={props.usecase} feedbackTypes={feedbackTypes}/>
     </>
   )
 }

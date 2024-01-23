@@ -5,9 +5,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import React, {useState} from "react";
 import Button from "@mui/material/Button";
 import {IconButton, Typography} from "@mui/material";
-import FeedbackController from "./header/FeedbackController";
+import FeedbackController from "./navbar/FeedbackController";
 
-function FeedbackHeader (props) {
+function Navbar (props) {
   return(
     <>
       <div className="header">
@@ -65,4 +65,4 @@ function RootButton(props) {
     </>
   )
 }
-export default FeedbackHeader;
+export default Navbar;

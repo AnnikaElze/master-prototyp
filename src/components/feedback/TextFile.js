@@ -8,7 +8,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle';
     info < string >
 */}
 
-function FeedbackTextFile (props) {
+function TextFile (props) {
   return(
     <>
       <FeedbackText type={props.type} info={props.info}/>
@@ -43,4 +43,4 @@ function FeedbackText (props) {
     )
 }
 
-export default FeedbackTextFile;
+export default TextFile;

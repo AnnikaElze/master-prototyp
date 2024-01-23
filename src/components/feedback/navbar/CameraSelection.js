@@ -1,6 +1,6 @@
 import {FormControl, InputLabel, MenuItem, Paper, Select} from "@mui/material";
 import {useState} from "react";
-import theme from "../Theme";
+import theme from "../../Theme";
 
 function CameraSelection (props) {
   const [cameraList, setCameraList] = useState([]);

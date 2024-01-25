@@ -1,4 +1,4 @@
-function PoseLandmarks (bodyLandmarks) {
+export default function PoseLandmarks (bodyLandmarks) {
   if (bodyLandmarks[0] !== undefined){
     const poseLandmarks =
       {leftLeg: [[
@@ -29,9 +29,11 @@ function PoseLandmarks (bodyLandmarks) {
         ],
         shoulderConnector: [
           {start: 0, end: 1},
-        ]};
+        ],
+        bodyConnector: [
+          {start: 0, end: 1},
+        ],
+      };
     return (poseLandmarks);
   }
 }
-
-export default PoseLandmarks;

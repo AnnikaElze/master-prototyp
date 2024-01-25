@@ -1,8 +1,8 @@
 import BodyLandmarks from "./videoViewer/BodyLandmarks";
 import {useRef} from "react";
 import {DrawingUtils} from "@mediapipe/tasks-vision";
-import LungeConditions from "./videoViewer/LungeConditions";
-import HandstandConditions from "./videoViewer/HandstandConditions";
+import LungeConditions from "./videoViewer/utils/lungeConditions";
+import HandstandConditions from "./videoViewer/utils/handstandConditions";
 
 function VideoViewer (props) {
   const canvasRef = useRef(null);

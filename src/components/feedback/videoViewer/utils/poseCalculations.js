@@ -1,6 +1,6 @@
 import * as THREE from "three";
 
-export default function kneeAngleCalculation (poseLandmarks) {
+export function sideKneeAngleCalculation (poseLandmarks) {
   const hip = new THREE.Vector3(poseLandmarks[0][0].x,
     poseLandmarks[0][0].y, poseLandmarks[0][0].z);
   const knee = new THREE.Vector3(poseLandmarks[0][1].x,
@@ -17,4 +17,13 @@ export default function kneeAngleCalculation (poseLandmarks) {
   const angleInRadians = kneeHip.angleTo(kneeFoot);
 
   return THREE.MathUtils.radToDeg(angleInRadians);
+}
+
+export function sideHipCalculation (leftHip, rightHip) {
+  return Math.abs(leftHip.x - rightHip.x);
+}
+
+export function sideBodyCalculation (hipCenter, shoulderCenter) {
+
+  return Math.abs(hipCenter.x - shoulderCenter.x);
 }

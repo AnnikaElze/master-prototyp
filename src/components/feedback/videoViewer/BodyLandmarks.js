@@ -25,7 +25,7 @@ function BodyLandmarks (props) {
             baseOptions: { modelAssetPath: pose_landmarker_task },
             numPoses: 1,
             runningMode: "video",
-            delegate: "GPU"
+            minPosePresenceConfidence: 0.8,
           }
         );
         detectPoses();

@@ -9,8 +9,6 @@ function BodyLandmarks (props) {
     let poseLandmarker;
     let animationFrameId;
 
-    console.log('BodyLandmarks CameraID' + props.camera);
-
     const constraints = {
       video: {deviceId: {exact: props.camera}}
     }

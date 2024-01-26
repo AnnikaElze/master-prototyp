@@ -1,18 +1,18 @@
 import PoseLandmarks from "./poseLandmarks";
-import * as poseCalculations from "./poseCalculations";
-import * as poseOverlays from "./poseOverlays";
+import {angleController, shiftController, targetController} from "./poseCalculations";
+import {backBodyInfo, backHipInfo, backLegInfo, sideBodyInfo, sideHipInfo, sideLegInfo} from "./textMessages";
 
-export default function LungeConditions (drawingUtils, perspective, bodyLandmarks) {
+export default function LungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts) {
 
   //Thresholds
   const sideKneeAngleMax = 105;
   const sideKneeAngleMin = 75;
-  const sideHipThreshold = 0.05;
+  const sideHipThreshold = 0.04;
   const sideBodyThreshold = 0.01;
 
-  const backKneeThreshold = 0.05;
+  const backLegThreshold = 0.03;
   const backHipThreshold = 0.05;
-  const backBodyThreshold = 0.05;
+  const backBodyThreshold = 0.01;
 
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
@@ -29,58 +29,56 @@ export default function LungeConditions (drawingUtils, perspective, bodyLandmark
       z: (poseLandmarks.shoulders[0][0].z + poseLandmarks.shoulders[0][1].z)/2
     };
 
-    const body = [[
-      hipCenter,
-      shoulderCenter
-    ]]
-
     // Perspective 1: Side view of the open side
     if (perspective === 1) {
 
-      // Condition 1: Leg Position
-      const kneeAngles = [
-        [poseLandmarks.leftLeg, poseCalculations.sideKneeAngleCalculation(poseLandmarks.leftLeg)],
-        [poseLandmarks.rightLeg, poseCalculations.sideKneeAngleCalculation(poseLandmarks.rightLeg)]
-      ]
+      const isLeftSide = poseLandmarks.leftLeg[0][1].y < poseLandmarks.rightLeg[0][1].y;
 
-      kneeAngles.forEach(kneeAngle => {
-        if (kneeAngle[1] > sideKneeAngleMax || kneeAngle[1] < sideKneeAngleMin) {
-          poseOverlays.skeletonOverlay('red', kneeAngle[0], poseLandmarks.legConnector, drawingUtils)
-        } else {
-          poseOverlays.skeletonOverlay('green', kneeAngle[0], poseLandmarks.legConnector, drawingUtils)
-        }
-      })
+      // Condition 1: Leg Position
+      angleController(sideKneeAngleMax, sideKneeAngleMin, isLeftSide,
+        poseLandmarks.leftLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts, sideLegInfo)
+      angleController(sideKneeAngleMax, sideKneeAngleMin, isLeftSide,
+        poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts, sideLegInfo)
 
       // Condition 2: Hip Position
-      const hipShift = poseCalculations.sideHipCalculation(poseLandmarks.hip[0][0], poseLandmarks.hip[0][1]);
-
-      if (hipShift > sideHipThreshold) {
-        poseOverlays.skeletonOverlay('red', poseLandmarks.hip, poseLandmarks.hipConnector, drawingUtils)
-      } else {
-        poseOverlays.skeletonOverlay('green', poseLandmarks.hip, poseLandmarks.hipConnector, drawingUtils)
-      }
+      shiftController(poseLandmarks.hip[0][0].x, poseLandmarks.hip[0][1].x, sideHipThreshold,
+        poseLandmarks.hip, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, sideHipInfo);
 
       // Condition 3: Upper Body Position
-      const bodyShift = poseCalculations.sideBodyCalculation(hipCenter, shoulderCenter);
-
-      if (bodyShift > sideBodyThreshold) {
-        poseOverlays.skeletonOverlay('red', body, poseLandmarks.bodyConnector, drawingUtils)
-      } else {
-        poseOverlays.skeletonOverlay('green', body, poseLandmarks.bodyConnector, drawingUtils)
+      const target = {
+        x: hipCenter.x,
+        y: shoulderCenter.y,
+        z: shoulderCenter.z
       }
+
+      targetController(hipCenter.x, shoulderCenter.x, sideBodyThreshold, shoulderCenter, target, ctx, handleFeedbackTexts, sideBodyInfo);
     }
 
     // Perspective 2: Back view
     else {
       // Condition 1: Leg Position
-      // ToDo
+      shiftController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, backLegThreshold,
+        poseLandmarks.upperLeftLeg, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, backLegInfo);
+      shiftController(poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x, backLegThreshold,
+        poseLandmarks.lowerLeftLeg, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, backLegInfo);
+      shiftController(poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, backLegThreshold,
+        poseLandmarks.upperRightLeg, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, backLegInfo);
+      shiftController(poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x, backLegThreshold,
+        poseLandmarks.lowerRightLeg, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, backLegInfo);
 
       // Condition 2: Hip Position
-      // ToDo
+      shiftController(poseLandmarks.hip[0][0].y, poseLandmarks.hip[0][1].y, backHipThreshold,
+        poseLandmarks.hip, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, backHipInfo);
 
       // Condition 3: Upper Body Position
-      // ToDo
+      const target = {
+        x: hipCenter.x,
+        y: shoulderCenter.y,
+        z: shoulderCenter.z
+      }
 
+      targetController(hipCenter.x, shoulderCenter.x, backBodyThreshold,
+        shoulderCenter, target, ctx, handleFeedbackTexts, backBodyInfo);
     }
 
   }

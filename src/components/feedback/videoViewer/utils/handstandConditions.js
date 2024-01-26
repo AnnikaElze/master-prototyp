@@ -1,6 +1,4 @@
-import {PoseLandmarker} from "@mediapipe/tasks-vision";
-
-export default function HandstandConditions (drawingUtils, perspective, landmarks) {
+export default function HandstandConditions (ctx, drawingUtils, perspective, landmarks, handleFeedbackTexts) {
   // Perspective 1: Side view
   if (perspective === 1){
 

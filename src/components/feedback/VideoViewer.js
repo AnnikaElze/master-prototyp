@@ -6,7 +6,6 @@ import HandstandConditions from "./videoViewer/utils/handstandConditions";
 
 function VideoViewer (props) {
   const canvasRef = useRef(null);
-
   function DrawLandmarks (landmarks) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -19,9 +18,9 @@ function VideoViewer (props) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (props.usecase === "Quadrizeps Dehnung") {
-      LungeConditions(drawingUtils, props.perspective, landmarks);
+      LungeConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
     } else {
-      HandstandConditions(drawingUtils, props.perspective, landmarks);
+      HandstandConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
     }
   }
 

@@ -25,7 +25,7 @@ function VideoViewer (props) {
   }
 
   function Overlay (feedbackTypes) {
-    if (feedbackTypes.includes('overlay')) {
+    if (feedbackTypes.includes('overlay') && props.usecase === "Quadrizeps Dehnung" && props.excersiseState !== true) {
       return "feedbackCanvas"
     } else return "feedbackCanvasDisabled"
   }

@@ -7,14 +7,14 @@ const green = '#689F3890';
 const greenOpaque = '#689F38';
 
 export function angleController (thresholdMax, thresholdMin, isLeftSide, landmarks, connector,
-                                 drawingUtils, ctx, handleFeedbackTexts, info) {
+                                 drawingUtils, ctx, handleFeedbackTexts, perspective, feedback) {
 
   const firstJoint = new THREE.Vector3(landmarks[0][0].x,
-    landmarks[0][0].y, landmarks[0][0].z);
+    landmarks[0][0].y, 0);
   const centerJoint = new THREE.Vector3(landmarks[0][1].x,
-    landmarks[0][1].y, landmarks[0][1].z);
+    landmarks[0][1].y, 0);
   const secondJoint = new THREE.Vector3(landmarks[0][2].x,
-    landmarks[0][2].y, landmarks[0][2].z);
+    landmarks[0][2].y, 0);
 
   const firstLimb = centerJoint.clone().sub(firstJoint);
   const secondLimb = centerJoint.clone().sub(secondJoint);
@@ -26,36 +26,36 @@ export function angleController (thresholdMax, thresholdMin, isLeftSide, landmar
 
   if (angleInDegrees > thresholdMax || angleInDegrees < thresholdMin) {
     angleOverlay(red, isLeftSide, landmarks, connector, drawingUtils, ctx);
-    handleFeedbackTexts("warning", info[0], info[1]);
+    handleFeedbackTexts(perspective, feedback, "warning");
   } else {
     angleOverlay(green, isLeftSide, landmarks, connector, drawingUtils, ctx);
-    handleFeedbackTexts("success", info[1], info[0]);
+    handleFeedbackTexts(perspective, feedback, "success");
   }
 
 }
 
 export function shiftController (a, b, threshold, landmarks, connector, drawingUtils,
-                                 handleFeedbackTexts, info) {
+                                 handleFeedbackTexts, perspective, feedback) {
   const shift = Math.abs(a - b);
 
   if (shift > threshold) {
     skeletonOverlay(redOpaque, landmarks, connector, drawingUtils);
-    handleFeedbackTexts("warning", info[0], info[1]);
+    handleFeedbackTexts(perspective, feedback, "warning");
   } else {
     skeletonOverlay(greenOpaque, landmarks, connector, drawingUtils);
-    handleFeedbackTexts("success", info[1], info[0]);
+    handleFeedbackTexts(perspective, feedback, "success");
   }
 }
 
 export function targetController (referenceValue, targetValue, threshold, start, target, ctx,
-                                  handleFeedbackTexts, info) {
+                                  handleFeedbackTexts, perspective, feedback) {
   const shift = Math.abs(referenceValue - targetValue);
 
   if (shift > threshold) {
     targetOverlay(true, red, start, target, ctx);
-    handleFeedbackTexts("warning", info[0], info[1]);
+    handleFeedbackTexts(perspective,  feedback, "warning");
   } else {
     targetOverlay(false, green, start, target, ctx);
-    handleFeedbackTexts("success", info[1], info[0]);
+    handleFeedbackTexts(perspective, feedback, "success");
   }
 }

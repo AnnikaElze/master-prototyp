@@ -1,21 +1,40 @@
 import TextFile from "./TextFile";
-
-const FeedbackTexts = ({ feedbackTexts }) => {
-  return (
-    <>
-      {feedbackTexts.map((feedbackText) =>
-        <div className="feedbackText">
-          <TextFile type={feedbackText[0]} info={feedbackText[1]}/>
-        </div>
-      )};
-    </>
-  )
-}
+import {Lunge, Handstand} from "./videoViewer/utils/textMessages";
+import {checkLungePosition} from "./stateUtils/lungeStates";
+import InfoFile from "./InfoFile";
 
 function TextViewer(props) {
-  return (
-    <FeedbackTexts feedbackTexts={props.feedbackTexts}/>
-  )
+  if (props.usecase === "Quadrizeps Dehnung") {
+    if (props.exerciseState !== true) {
+      const checkFeedbackTexts = { ...props.feedbackTexts, ...props.controlfeedbackTexts };
+      props.handleExerciseState(checkLungePosition(checkFeedbackTexts));
+
+      return (
+        <>
+          {Object.keys(props.feedbackTexts).map(key => (
+            <div className="feedbackText">
+              <TextFile type={props.feedbackTexts[key]} info={Lunge[key][props.feedbackTexts[key]]}/>
+            </div>
+          ))}
+        </>
+      )
+    } else if (props.textViewer === 1) {
+      return (
+        <>
+          <div className="feedbackText">
+            <TextFile type={"info"} info={Lunge.correctInfo}/>
+          </div>
+          <div className="feedbackText">
+            <InfoFile type={"info"} info={Lunge.stretchingInfo}/>
+          </div>
+        </>
+      )
+    }
+
+  } else {
+
+  }
+
 }
 
 export default TextViewer;

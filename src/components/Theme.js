@@ -32,6 +32,15 @@ const theme = createTheme({
         fontSize: '16px',
       },
     },
+    body2: {
+      fontFamily: 'UniversLTStd-Light',
+      color: '#E6E6E6',
+      fontSize: '12px',
+      '@media (min-width:600px)': {
+        fontSize: '15px',
+      },
+      margin: 10,
+    },
     button: {
       fontFamily: 'UniversLTStd-Light',
       color: '#E6E6E6',

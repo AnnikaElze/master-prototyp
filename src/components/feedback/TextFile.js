@@ -37,7 +37,7 @@ function FeedbackText (props) {
     <>
       <div className={handleFeedbackTextColor(props.type)}>
         {FeedbackIcon(props.type)}
-        <Typography variant={'body1'} className="textBoxText">{props.info}</Typography>
+        <Typography variant={'body2'} className="textBoxText">{props.info}</Typography>
       </div>
     </>
     )

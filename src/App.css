@@ -14,12 +14,18 @@
     --horizontal-padding-half: 0.5vw;
     --vertical-padding: 2vh;
     --header-height: 8vh;
-    --text-box: 4vh;
+    --text-box: 6vh;
+    --info-text-box: 24vh;
     --border-radius: 5px;
 }
 
 .homepageButton {
     margin: 2vh !important;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1vh;
 }
 
 /* Header */
@@ -126,6 +132,17 @@
 .textBoxInfo {
     background-color: var(--primary-main-transparent);
     border-color: var(--primary-main);
+    margin-left: 20vw;
+    width: 60vw;
+}
+
+.infoText {
+    background-color: var(--primary-main-transparent);
+    border-color: var(--primary-main);
+    margin-left: 20vw;
+    width: 60vw;
+    height: auto;
+    align-items: start;
 }
 
 .textBoxSuccess {
@@ -140,6 +157,11 @@
 
 .textBoxText {
     padding-left: var(--horizontal-padding-half);
+}
+
+.timer {
+    position: absolute;
+    margin-top: -24vh;
 }
 
 /* Controller */

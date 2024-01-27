@@ -17,7 +17,6 @@ export function angleOverlay (color, isCounterclockwise, landmarks, connector, d
   ctx.lineTo(landmarks[0][1].x * ctx.canvas.width, landmarks[0][1].y * ctx.canvas.height);
   ctx.fillStyle = color;
   ctx.fill();
-  ctx.closePath();
 
   landmarks.forEach(landmark => {
     drawingUtils.drawConnectors(landmark, connector, {color: 'white', lineWidth: 1.5});

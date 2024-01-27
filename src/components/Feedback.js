@@ -2,7 +2,6 @@ import Navbar from "./feedback/Navbar";
 import TextViewer from "./feedback/TextViewer";
 import React, {useState} from "react";
 import VideoViewer from "./feedback/VideoViewer";
-import TextFile from "./feedback/TextFile";
 
 function Feedback (props) {
   const [feedbackTypes, setFeedbackTypes] = useState(() => ['overlay', 'text', 'audio', 'signal']);
@@ -11,8 +10,10 @@ function Feedback (props) {
   const [reset1, setReset1] = useState(false);
   const [reset2, setReset2] = useState(false);
 
-  const [feedbackTexts1, setFeedbackTexts1] = useState([]);
-  const [feedbackTexts2, setFeedbackTexts2] = useState([]);
+  const [exerciseState, setExerciseState] = useState(false);
+
+  const [feedbackTexts1, setFeedbackTexts1] = useState({});
+  const [feedbackTexts2, setFeedbackTexts2] = useState({});
 
   const handleFeedbackType = (event, newFeedbackType) => {
     setFeedbackTypes(newFeedbackType);
@@ -34,81 +35,31 @@ function Feedback (props) {
     }, 3000);
   };
 
-  const handleFeedbackTexts1 = (type, newInfo, oldInfo) => {
-    let currentFeedbackTexts = feedbackTexts1;
-
-    let isNew = true;
-    let isInit = true;
-
-    currentFeedbackTexts.forEach(feedbackText => {
-      if (feedbackText[1] === newInfo) {
-        isNew = false;
-        isInit = false;
-      }
-    })
-
-    if (isNew) {
-      currentFeedbackTexts.forEach(feedbackText => {
-        if (feedbackText[1] === oldInfo) {
-          feedbackText[0] = type;
-          feedbackText[1] = newInfo;
-          isInit = false;
-        }
-      })
+  const handleFeedbackTexts = (perspective, feedback, type) => {
+    if (perspective === 1) {
+      setFeedbackTexts1(prevState => ({
+        ...prevState,
+        [feedback]: type
+      }));
+    } else {
+      setFeedbackTexts2(prevState => ({
+        ...prevState,
+        [feedback]: type
+      }));
     }
-
-    if (isInit) {
-      let newFeedbackText = [
-        type,
-        newInfo
-      ];
-      currentFeedbackTexts.push(newFeedbackText);
-    }
-
-    setFeedbackTexts1(currentFeedbackTexts);
   }
 
-  const handleFeedbackTexts2 = (type, newInfo, oldInfo) => {
-    let currentFeedbackTexts = feedbackTexts2;
-
-    let isNew = true;
-    let isInit = true;
-
-    currentFeedbackTexts.forEach(feedbackText => {
-      if (feedbackText[1] === newInfo) {
-        isNew = false;
-        isInit = false;
-      }
-    })
-
-    if (isNew) {
-      currentFeedbackTexts.forEach(feedbackText => {
-        if (feedbackText[1] === oldInfo) {
-          feedbackText[0] = type;
-          feedbackText[1] = newInfo;
-          isInit = false;
-        }
-      })
-    }
-
-    if (isInit) {
-      let newFeedbackText = [
-        type,
-        newInfo
-      ]
-      currentFeedbackTexts.push(newFeedbackText);
-    }
-
-    setFeedbackTexts2(currentFeedbackTexts);
+  const handleExerciseState = (state) => {
+    setExerciseState(state);
   }
 
-  function loadVideo(perspective, cameraID, isReset, handleFeedbackTexts) {
+  function loadVideo(perspective, cameraID, isReset) {
     if (isReset) {
       return null;
     } else {
       return (
         <VideoViewer perspective={perspective} feedbackTypes={feedbackTypes} usecase={props.usecase} camera={cameraID}
-                     handleFeedbackTexts={handleFeedbackTexts}/>
+                     handleFeedbackTexts={handleFeedbackTexts} excersiseState={exerciseState}/>
       )
     }
   }
@@ -119,10 +70,14 @@ function Feedback (props) {
         <>
           <div className="feedbackGridViewer">
             <div className="feedbackGridViewerItem" id="feedbackViewer1">
-              <TextViewer feedbackTexts={feedbackTexts1}/>
+              <TextViewer feedbackTexts={feedbackTexts1} controlfeedbackTexts={feedbackTexts2}
+                          usecase={props.usecase} handleExerciseState={handleExerciseState}
+                          exerciseState={exerciseState} textViewer={1}/>
             </div>
             <div className="feedbackGridViewerItem" id="feedbackViewer2">
-              <TextViewer feedbackTexts={feedbackTexts2}/>
+              <TextViewer feedbackTexts={feedbackTexts2} controlfeedbackTexts={feedbackTexts1}
+                          usecase={props.usecase} handleExerciseState={handleExerciseState}
+                          exerciseState={exerciseState} textViewer={2}/>
             </div>
           </div>
         </>
@@ -145,10 +100,10 @@ function Feedback (props) {
               handleCamera2={handleCamera2} camera2={camera2}/>
       <div className="feedbackGridVideo">
         <div className="feedbackGridVideoItem">
-          {loadVideo(1, camera1, reset1, handleFeedbackTexts1)}
+          {loadVideo(1, camera1, reset1)}
         </div>
         <div className="feedbackGridVideoItem">
-          {loadVideo(2, camera2, reset2, handleFeedbackTexts2)}
+          {loadVideo(2, camera2, reset2)}
         </div>
       </div>
       {feedbackDecision()}

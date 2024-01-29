@@ -1,10 +1,17 @@
 import Button from "@mui/material/Button";
 import {Typography} from "@mui/material";
 
+/**
+ * @parent App
+ * @props handleRoot
+ * @return RootButton
+ */
+
 let homepageStyle = {
   textAlign: 'center',
   paddingTop: '40vh',
 }
+
 function Homepage (props) {
   return(
     <>

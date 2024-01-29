@@ -3,14 +3,25 @@ import TextViewer from "./feedback/TextViewer";
 import React, {useState} from "react";
 import VideoViewer from "./feedback/VideoViewer";
 
+/**
+ * @parent App
+ * @props handleRoot, usecase
+ * @creats  feedbackTypes - for controlling which feedback elements are to be displayed (video overlay, text, signal)
+ *          camera1, camera2 - id of the camera devices for video 1 and 2
+ *          reset1, reset2 - for reset of video 1 and 2 when switching the camera device
+ *          exerciseState - for tracking the current state of the execution of the current exercise
+ *          feedbackTexts1, feedbackTexts2 - for tracking the current feedback states for video 1 and 2
+ * @children Navbar, VideoViewer, TextViewer
+ */
+
 function Feedback (props) {
-  const [feedbackTypes, setFeedbackTypes] = useState(() => ['overlay', 'text', 'audio', 'signal']);
+  const [feedbackTypes, setFeedbackTypes] = useState(() => ['overlay', 'text', 'audio']);
   const [camera1, setCamera1] = useState();
   const [camera2, setCamera2] = useState();
   const [reset1, setReset1] = useState(false);
   const [reset2, setReset2] = useState(false);
 
-  const [exerciseState, setExerciseState] = useState(false);
+  const [exerciseState, setExerciseState] = useState(0);
 
   const [feedbackTexts1, setFeedbackTexts1] = useState({});
   const [feedbackTexts2, setFeedbackTexts2] = useState({});
@@ -59,7 +70,7 @@ function Feedback (props) {
     } else {
       return (
         <VideoViewer perspective={perspective} feedbackTypes={feedbackTypes} usecase={props.usecase} camera={cameraID}
-                     handleFeedbackTexts={handleFeedbackTexts} excersiseState={exerciseState}/>
+                     handleFeedbackTexts={handleFeedbackTexts} excerciseState={exerciseState}/>
       )
     }
   }
@@ -70,12 +81,12 @@ function Feedback (props) {
         <>
           <div className="feedbackGridViewer">
             <div className="feedbackGridViewerItem" id="feedbackViewer1">
-              <TextViewer feedbackTexts={feedbackTexts1} controlfeedbackTexts={feedbackTexts2}
+              <TextViewer feedbackTexts={feedbackTexts1} controlFeedbackTexts={feedbackTexts2}
                           usecase={props.usecase} handleExerciseState={handleExerciseState}
                           exerciseState={exerciseState} textViewer={1}/>
             </div>
             <div className="feedbackGridViewerItem" id="feedbackViewer2">
-              <TextViewer feedbackTexts={feedbackTexts2} controlfeedbackTexts={feedbackTexts1}
+              <TextViewer feedbackTexts={feedbackTexts2} controlFeedbackTexts={feedbackTexts1}
                           usecase={props.usecase} handleExerciseState={handleExerciseState}
                           exerciseState={exerciseState} textViewer={2}/>
             </div>

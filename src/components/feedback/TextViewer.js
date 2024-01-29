@@ -1,13 +1,23 @@
 import TextFile from "./TextFile";
-import {Lunge, Handstand} from "./videoViewer/utils/textMessages";
-import {checkLungePosition} from "./stateUtils/lungeStates";
+import {Lunge, Handstand} from "./usecaseUtils/textMessages";
+import {checkLungePosition} from "./usecaseUtils/lungeStates";
 import InfoFile from "./InfoFile";
+import Countdown from "./Countdown";
+
+/**
+ * @parent Feedback
+ * @props feedbackTexts, controlFeedbackTexts, usecase, handleExerciseState, exerciseState, textViewer
+ * @helpfunctions checkLungePosition | checkHandstandStartingPosition
+ * @return TextFiles in the type and order required by the current exerciseState
+ */
 
 function TextViewer(props) {
+  // Usecase: Stretching
   if (props.usecase === "Quadrizeps Dehnung") {
-    if (props.exerciseState !== true) {
-      const checkFeedbackTexts = { ...props.feedbackTexts, ...props.controlfeedbackTexts };
-      props.handleExerciseState(checkLungePosition(checkFeedbackTexts));
+    // State 1: Pose Correction
+    if (props.exerciseState === 0) {
+      const checkFeedbackTexts = { ...props.feedbackTexts, ...props.controlFeedbackTexts };
+      props.handleExerciseState(checkLungePosition(checkFeedbackTexts, props.exerciseState));
 
       return (
         <>
@@ -18,21 +28,45 @@ function TextViewer(props) {
           ))}
         </>
       )
-    } else if (props.textViewer === 1) {
+    }
+    // State 2: Execution
+    else if (props.textViewer === 1 && props.exerciseState === 1) {
       return (
         <>
           <div className="feedbackText">
             <TextFile type={"info"} info={Lunge.correctInfo}/>
           </div>
+          <Countdown countdown={30} handleExerciseState={props.handleExerciseState} exerciseState={props.exerciseState}/>
           <div className="feedbackText">
             <InfoFile type={"info"} info={Lunge.stretchingInfo}/>
           </div>
         </>
       )
     }
+    // State 3: Finish
+    else {
+      if (props.textViewer === 1){
+        return (
+          <>
+            <div className="feedbackText exitText">
+              <TextFile type={"success"} info={Lunge.exitInfo}/>
+            </div>
+          </>
+        )
+      }
+    }
+  }
+  // Usecase: Handstand
+  else {
+    // State 1: Starting Position
+    if (props.exerciseState === 0) {
 
-  } else {
+    }
+    // State 2: Dynamic movement
 
+    // State 3: Handstand
+
+    // State 4: Finish
   }
 
 }

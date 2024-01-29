@@ -2,6 +2,12 @@ import {FormControl, InputLabel, MenuItem, Select} from "@mui/material";
 import {useState} from "react";
 import theme from "../../Theme";
 
+/**
+ * @parent FeedbackController
+ * @props selectionId, handleCamera, camera
+ * @return Dropdown for camera device selection - set camera1 | camera2 in Feedback
+ */
+
 function CameraSelection (props) {
   const [cameraList, setCameraList] = useState([]);
   const [init, setInit] = useState(true);

@@ -1,10 +1,5 @@
 import {Typography} from "@mui/material";
 
-{/* props
-    type < warning | success | info >
-    info < string >
-*/}
-
 function InfoFile (props) {
   return(
     <>

@@ -47,6 +47,20 @@ export function shiftController (a, b, threshold, landmarks, connector, drawingU
   }
 }
 
+export function alignmentController (a, b, c, threshold, landmarks, connector, drawingUtils,
+                                     handleFeedbackTexts, perspective, feedback) {
+  const shift1 = Math.abs(a - b);
+  const shift2 = Math.abs(b - c);
+
+  if (shift1 > threshold || shift2 > threshold) {
+    skeletonOverlay(redOpaque, landmarks, connector, drawingUtils);
+    handleFeedbackTexts(perspective, feedback, "warning");
+  } else {
+    skeletonOverlay(greenOpaque, landmarks, connector, drawingUtils);
+    handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
 export function targetController (referenceValue, targetValue, threshold, start, target, ctx,
                                   handleFeedbackTexts, perspective, feedback) {
   const shift = Math.abs(referenceValue - targetValue);

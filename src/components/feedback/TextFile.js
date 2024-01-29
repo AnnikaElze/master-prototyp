@@ -3,10 +3,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import WarningIcon from '@mui/icons-material/Warning';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
-{/* props
+/* props
     type < warning | success | info >
     info < string >
-*/}
+*/
 
 function TextFile (props) {
   return(

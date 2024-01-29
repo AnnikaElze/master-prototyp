@@ -7,6 +7,12 @@ import theme from "./components/Theme";
 import React, {useState} from "react";
 import Feedback from "./components/Feedback";
 
+/**
+ * @creates root - for the distinction between feedback mode and home screen
+ *          usecase - for the distinction between stretching and handstand
+ * @children Homepage | Feedback
+ */
+
 let rootStyle = {
   backgroundColor: theme.palette.background,
   height: '100vh',
@@ -33,7 +39,6 @@ function App() {
       <ThemeProvider theme={theme}>
         {rootDecision()}
       </ThemeProvider>
-      {/*<HandDetection/>*/}
     </div>
   );
 }

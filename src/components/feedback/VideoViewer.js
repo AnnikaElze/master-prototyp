@@ -1,8 +1,19 @@
 import BodyLandmarks from "./videoViewer/BodyLandmarks";
 import {useRef} from "react";
 import {DrawingUtils} from "@mediapipe/tasks-vision";
-import LungeConditions from "./videoViewer/utils/lungeConditions";
-import HandstandConditions from "./videoViewer/utils/handstandConditions";
+import lungeConditions from "./usecaseUtils/lungeConditions";
+import handstandConditions from "./usecaseUtils/handstandConditions";
+
+/**
+ * @parent Feedback
+ * @props perspective, feedbackTypes, usecase, camera, handleFeedbackTexts, exerciseState
+ * @creats  canvasRef - for calling the canvas
+ *          ctx - initializing the canvas context
+ *          drawingUtils - initializing the DrawingUtils by mediapipe_task-vision
+ * @helpfunctions lungeConditions | handstandConditions
+ * @children BodyLandmarks
+ * @return canvas overlay of the video
+ */
 
 function VideoViewer (props) {
   const canvasRef = useRef(null);
@@ -18,14 +29,14 @@ function VideoViewer (props) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (props.usecase === "Quadrizeps Dehnung") {
-      LungeConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
+      lungeConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
     } else {
-      HandstandConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
+      handstandConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
     }
   }
 
   function Overlay (feedbackTypes) {
-    if (feedbackTypes.includes('overlay') && props.usecase === "Quadrizeps Dehnung" && props.excersiseState !== true) {
+    if (feedbackTypes.includes('overlay') && props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 0) {
       return "feedbackCanvas"
     } else return "feedbackCanvasDisabled"
   }

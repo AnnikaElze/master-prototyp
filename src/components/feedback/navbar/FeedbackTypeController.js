@@ -1,10 +1,15 @@
 import ToggleButton from "@mui/material/ToggleButton";
 import OverlayIcon from "@mui/icons-material/Layers";
 import TextIcon from "@mui/icons-material/Message";
-import AudioIcon from "@mui/icons-material/VolumeUp";
 import SignalIcon from "@mui/icons-material/Notifications";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import theme from "../../Theme";
+
+/**
+ * @parent FeedbackController
+ * @props feedbackTypes, handleFeedbackType
+ * @return ToggleButtonGroup to toggle the feedbackType in Feedback
+ */
 
 function FeedbackTypeController(props) {
 
@@ -48,9 +53,6 @@ function ControllerToggleUnit (props) {
         <TextIcon className="controlIcon"/>
       </ToggleButton>
       <ToggleButton value="audio" color="primary">
-        <AudioIcon className="controlIcon"/>
-      </ToggleButton>
-      <ToggleButton value="signal" color="primary">
         <SignalIcon className="controlIcon"/>
       </ToggleButton>
     </ToggleButtonGroup>

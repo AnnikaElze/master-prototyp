@@ -124,7 +124,7 @@ p {
     width: 100%;
     border: 0.5pt solid;
     border-radius: var(--border-radius);
-    height: var(--text-box);
+    height: auto;
     display: flex;
     align-items: center;
 }
@@ -145,6 +145,12 @@ p {
     align-items: start;
 }
 
+.exitText {
+    margin-left: 20vw;
+    width: 60vw;
+    height: auto;
+}
+
 .textBoxSuccess {
     background-color: var(--secondary-main-transparent);
     border-color: var(--secondary-main);
@@ -159,9 +165,20 @@ p {
     padding-left: var(--horizontal-padding-half);
 }
 
-.timer {
-    position: absolute;
-    margin-top: -24vh;
+.countdown {
+    margin-left: 20vw;
+    width: 60vw;
+    background:  var(--primary-main-transparent);
+    height: 1.5vh;
+    margin-bottom: 1vh;
+    border-radius: var(--border-radius);
+}
+
+.countdownProgress {
+    background: var(--primary-main);
+    height: 100%;
+    transition: width 1s linear;
+    border-radius: var(--border-radius);
 }
 
 /* Controller */

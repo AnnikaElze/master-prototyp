@@ -1,3 +1,7 @@
+/**
+ * Documentation of body landmarks delivered by mediapipe: https://developers.google.com/mediapipe/solutions/vision/pose_landmarker
+ */
+
 export default function PoseLandmarks (bodyLandmarks) {
   if (bodyLandmarks[0] !== undefined){
     const poseLandmarks =
@@ -6,24 +10,8 @@ export default function PoseLandmarks (bodyLandmarks) {
           bodyLandmarks[0][25],
           bodyLandmarks[0][27]
         ]],
-        upperLeftLeg: [[
-          bodyLandmarks[0][23],
-          bodyLandmarks[0][25]
-        ]],
-        lowerLeftLeg: [[
-          bodyLandmarks[0][25],
-          bodyLandmarks[0][27]
-        ]],
         rightLeg: [[
           bodyLandmarks[0][24],
-          bodyLandmarks[0][26],
-          bodyLandmarks[0][28]
-        ]],
-        upperRightLeg: [[
-          bodyLandmarks[0][24],
-          bodyLandmarks[0][26]
-        ]],
-        lowerRightLeg: [[
           bodyLandmarks[0][26],
           bodyLandmarks[0][28]
         ]],

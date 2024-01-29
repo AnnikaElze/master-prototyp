@@ -1,6 +1,12 @@
 import FeedbackTypeController from "./FeedbackTypeController";
 import CameraSelection from "./CameraSelection";
 
+/**
+ * @parent Navbar
+ * @props feedbackTypes, handleFeedbackType, handleCamera1, camera1, handleCamera2, camera2
+ * @children CameraSelection, FeedbackTypeController
+ */
+
 function FeedbackController (props) {
   return(
     <>

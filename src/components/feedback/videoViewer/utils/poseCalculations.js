@@ -1,4 +1,4 @@
-import {angleOverlay, skeletonOverlay, targetOverlay} from "./poseOverlays";
+import {angleOverlay, skeletonOverlay, straightOverlay, targetOverlay} from "./poseOverlays";
 
 const red = '#D32F2F90';
 const redOpaque = '#D32F2F';
@@ -8,15 +8,8 @@ const greenOpaque = '#689F38';
 export function angleController (threshold, isLeftSide, landmarks, connector,
                                  drawingUtils, ctx, handleFeedbackTexts, perspective, feedback) {
 
-  const firstLimb = {
-    x: landmarks[0][0].x - landmarks[0][1].x,
-    y: landmarks[0][0].y - landmarks[0][1].y,
-  }
-
-  const secondLimb = {
-    x: landmarks[0][2].x - landmarks[0][1].x,
-    y: landmarks[0][2].y - landmarks[0][1].y,
-  }
+  const firstLimb = limbCalculation(landmarks[0][0], landmarks[0][1])
+  const secondLimb = limbCalculation(landmarks[0][2], landmarks[0][1])
 
   const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
 
@@ -67,5 +60,33 @@ export function targetController (referenceValue, targetValue, threshold, start,
   } else {
     targetOverlay(false, green, start, target, ctx);
     handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
+export function straightController (threshold, landmarks, connector, drawingUtils, ctx,
+                                    handleFeedbackTexts, perspective, feedback) {
+
+  const firstLimb = limbCalculation(landmarks[0][0], landmarks[0][1])
+  const secondLimb = limbCalculation(landmarks[0][2], landmarks[0][1])
+
+  const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
+  const amountProduct = Math.sqrt(Math.pow(firstLimb.x, 2) + Math.pow(firstLimb.y, 2))
+    * Math.sqrt(Math.pow(secondLimb.x, 2) + Math.pow(secondLimb.y, 2))
+
+  const cos = 1 - Math.abs(scalarProduct/amountProduct);
+
+  if (cos > threshold) {
+    skeletonOverlay(redOpaque, landmarks,connector,drawingUtils)
+    handleFeedbackTexts(perspective, feedback, "warning");
+  } else {
+    skeletonOverlay(redOpaque, landmarks,connector,drawingUtils)
+    handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
+function limbCalculation (end, start) {
+  return {
+    x: end.x - start.x,
+    y: end.y - start.y,
   }
 }

@@ -61,7 +61,13 @@ function Feedback (props) {
   }
 
   const handleExerciseState = (state) => {
-    setExerciseState(state);
+    if (props.usecase === "Pole Handstand" && state !== exerciseState){
+      setExerciseState(state);
+      setFeedbackTexts1({});
+      setFeedbackTexts2({});
+    } else if (state !== exerciseState) {
+      setExerciseState(state);
+    }
   }
 
   function loadVideo(perspective, cameraID, isReset) {

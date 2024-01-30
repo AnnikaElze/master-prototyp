@@ -42,28 +42,64 @@ export const Lunge = {
 }
 
 export const Handstand = {
-  sideLegInfo: {
-    warning: "Achte auf einen rechten Winkel an deinen Kniegelenken!",
-    success: "Du hast den Winkel am Kniegelenk erfolgreich korrigiert."
+  state1sideArmInfo: {
+    warning: "Arm (Boden): Strecke deinen Standarm aus!",
+    success: "Arm (Boden)"
   },
-  sideHipInfo: {
-    warning: "Richte deine Hüfte gerade aus, sodass beide Hüftknochen nach vorn zeigen!",
-    success: "Du hast deine Hüfte gerade nach vorn ausgerichtet."
+  state1sideShoulderInfo: {
+    warning: "Schulter: Positioniere deine Schulter über dem Handgelenk",
+    success: "Schulter"
   },
-  sideBodyInfo: {
-    warning: "Achte auf eine aufrechte Haltung! Du solltest den Oberkörper nicht nach hinten oder vorn neigen.",
-    success: "Du hältst den Oberkörper aufrecht."
+  state1backArmInfo: {
+    warning: "Arme",
+    success: "Arme"
   },
-  backLegInfo: {
-    warning: "Achte auf eine gerade Ausrichtung der Beine!",
-    success: "Deine Beine sind gut positioniert"
+  state1backShoulderInfo: {
+    warning: "Schulter",
+    success: "Schulter"
   },
-  backHipInfo: {
-    warning: "Beide Hüftknochen sollten auf der selbern Höhe sein.",
-    success: "Deine Hüfte ist gerade."
+  state2: {
+    warning: "Schwung",
+    success: "Handstand"
   },
-  backBodyInfo: {
-    warning: "Achte auf eine aufrechte Haltung! Dein Oberkörper sollte nicht seitlich geneigt sein.",
-    success: "Du hältst den Oberkörper gerade."
-  }
+  state3sideArmInfo: {
+    warning: "Arm",
+    success: "Arm"
+  },
+  state3sideShoulderInfo: {
+    warning: "Schulter",
+    success: "Schulter"
+  },
+  state3sideHipInfo: {
+    warning: "Hüfte",
+    success: "Hüfte"
+  },
+  state3sideLegInfo: {
+    warning: "Beine",
+    success: "Beine"
+  },
+  state3sideFeetInfo: {
+    warning: "Füße",
+    success: "Füße"
+  },
+  state3backArmInfo: {
+    warning: "Arm",
+    success: "Arm"
+  },
+  state3backShoulderInfo: {
+    warning: "Schulter",
+    success: "Schulter"
+  },
+  state3backHipInfo: {
+    warning: "Hüfte",
+    success: "Hüfte"
+  },
+  state3backLegInfo: {
+    warning: "Beine",
+    success: "Beine"
+  },
+  state3backFeetInfo: {
+    warning: "Füße",
+    success: "Füße"
+  },
 }

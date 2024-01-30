@@ -6,7 +6,7 @@ export function skeletonOverlay (color, landmarks, connector, drawingUtils) {
 }
 
 export function angleOverlay (color, isCounterclockwise, landmarks, connector, drawingUtils, ctx) {
-  const radius = 15;
+  const radius = 20;
 
   ctx.beginPath();
   ctx.moveTo(landmarks[0][1].x * ctx.canvas.width, landmarks[0][1].y * ctx.canvas.height);
@@ -59,4 +59,22 @@ export function targetOverlay (isArrow, color, start, target, ctx) {
     ctx.fillStyle = 'white';
     ctx.fill();
   }
+}
+
+export function straightOverlay (color, landmarks, connector, drawingUtils, ctx) {
+  //drawingUtils.drawLandmarks(landmarks[0][1], {color: color, radius: 20});
+
+  const x = landmarks[0][1].x * ctx.canvas.width;
+  const y = landmarks[0][1].y * ctx.canvas.height;
+
+  ctx.beginPath();
+  ctx.arc(x, y, 10, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
+
+  landmarks.forEach(landmark => {
+    drawingUtils.drawConnectors(landmark, connector, {color: 'white', lineWidth: 1.5});
+    drawingUtils.drawLandmarks(landmark, {color: 'white', radius: 2.5});
+  });
 }

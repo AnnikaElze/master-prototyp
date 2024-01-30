@@ -17,6 +17,7 @@ import handstandConditions from "./usecaseUtils/handstandConditions";
 
 function VideoViewer (props) {
   const canvasRef = useRef(null);
+
   function DrawLandmarks (landmarks) {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -31,13 +32,19 @@ function VideoViewer (props) {
     if (props.usecase === "Quadrizeps Dehnung") {
       lungeConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
     } else {
-      handstandConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts);
+      handstandConditions(ctx, drawingUtils, props.perspective, landmarks, props.handleFeedbackTexts, props.excerciseState);
     }
   }
 
   function Overlay (feedbackTypes) {
-    if (feedbackTypes.includes('overlay') && props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 0) {
-      return "feedbackCanvas"
+    if (feedbackTypes.includes('overlay')){
+      if (props.excerciseState === 0) {
+        return "feedbackCanvas"
+      } else if (props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 1){
+        return "feedbackCanvasDisabled"
+      } else if (props.usecase === "Pole Handstand") {
+        return "feedbackCanvas"
+      }
     } else return "feedbackCanvasDisabled"
   }
 

@@ -11,13 +11,17 @@ import Countdown from "./Countdown";
  * @return TextFiles in the type and order required by the current exerciseState
  */
 
+function checkState (feedbackTexts, controlFeedbackTexts, handleExerciseState, exerciseState) {
+  const checkFeedbackTexts = { ...feedbackTexts, ...controlFeedbackTexts };
+  handleExerciseState(checkLungePosition(checkFeedbackTexts, exerciseState));
+}
+
 function TextViewer(props) {
   // Usecase: Stretching
   if (props.usecase === "Quadrizeps Dehnung") {
     // State 1: Pose Correction
     if (props.exerciseState === 0) {
-      const checkFeedbackTexts = { ...props.feedbackTexts, ...props.controlFeedbackTexts };
-      props.handleExerciseState(checkLungePosition(checkFeedbackTexts, props.exerciseState));
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState);
 
       return (
         <>
@@ -60,7 +64,17 @@ function TextViewer(props) {
   else {
     // State 1: Starting Position
     if (props.exerciseState === 0) {
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState);
 
+      return (
+        <>
+          {Object.keys(props.feedbackTexts).map(key => (
+            <div className="feedbackText">
+              <TextFile type={props.feedbackTexts[key]} info={Handstand[key][props.feedbackTexts[key]]}/>
+            </div>
+          ))}
+        </>
+      )
     }
     // State 2: Dynamic movement
 

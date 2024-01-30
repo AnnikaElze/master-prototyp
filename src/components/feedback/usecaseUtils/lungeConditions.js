@@ -9,7 +9,7 @@ import {alignmentController, angleController, shiftController, targetController}
  *                angleController - checks if the angle between two limbs is 90 degree
  *                shiftController - checks the difference between two values
  *                targetController - checks the distance to a target coordinate
- *                alignmentController - checks the linear alignment of three points
+ *                alignmentController - checks the difference between three values
  */
 
 export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts) {
@@ -26,17 +26,6 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
   if (bodyLandmarks[0] !== undefined) {
-    const hipCenter = {
-      x: (poseLandmarks.hip[0][0].x + poseLandmarks.hip[0][1].x)/2,
-      y: (poseLandmarks.hip[0][0].y + poseLandmarks.hip[0][1].y)/2,
-      z: (poseLandmarks.hip[0][0].z + poseLandmarks.hip[0][1].z)/2
-    };
-
-    const shoulderCenter = {
-      x: (poseLandmarks.shoulders[0][0].x + poseLandmarks.shoulders[0][1].x)/2,
-      y: (poseLandmarks.shoulders[0][0].y + poseLandmarks.shoulders[0][1].y)/2,
-      z: (poseLandmarks.shoulders[0][0].z + poseLandmarks.shoulders[0][1].z)/2
-    };
 
     // Perspective 1: Side view of the open side
     if (perspective === 1) {
@@ -58,13 +47,13 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
 
       // Condition 3: Upper Body Position
       const target = {
-        x: hipCenter.x,
-        y: shoulderCenter.y,
-        z: shoulderCenter.z
+        x: poseLandmarks.hipCenter[0][0].x,
+        y: poseLandmarks.shoulderCenter[0][0].y,
+        z: poseLandmarks.shoulderCenter[0][0].z
       }
 
-      targetController(hipCenter.x, shoulderCenter.x, sideBodyThreshold, shoulderCenter, target,
-        ctx, handleFeedbackTexts, perspective, "sideBodyInfo");
+      targetController(poseLandmarks.hipCenter[0][0].x, poseLandmarks.shoulderCenter[0][0].x, sideBodyThreshold,
+        poseLandmarks.shoulderCenter[0][0], target, ctx, handleFeedbackTexts, perspective, "sideBodyInfo");
     }
 
     // Perspective 2: Back view
@@ -82,13 +71,13 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
 
       // Condition 3: Upper Body Position
       const target = {
-        x: hipCenter.x,
-        y: shoulderCenter.y,
-        z: shoulderCenter.z
+        x: poseLandmarks.hipCenter[0][0].x,
+        y: poseLandmarks.shoulderCenter[0][0].y,
+        z: poseLandmarks.shoulderCenter[0][0].z
       }
 
-      targetController(hipCenter.x, shoulderCenter.x, backBodyThreshold,
-        shoulderCenter, target, ctx, handleFeedbackTexts,
+      targetController(poseLandmarks.hipCenter[0][0].x, poseLandmarks.shoulderCenter[0][0].x, backBodyThreshold,
+        poseLandmarks.shoulderCenter[0][0], target, ctx, handleFeedbackTexts,
         perspective, "backBodyInfo");
     }
 

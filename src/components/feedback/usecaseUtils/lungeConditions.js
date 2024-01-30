@@ -6,7 +6,7 @@ import {alignmentController, angleController, shiftController, targetController}
  * @props ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts
  * @creats thresholds
  * @helpfunctions PoseLandmarks - provides pose landmark groups from body landmarks by mediapipe
- *                angleController - checks the angle of a limb
+ *                angleController - checks if the angle between two limbs is 90 degree
  *                shiftController - checks the difference between two values
  *                targetController - checks the distance to a target coordinate
  *                alignmentController - checks the linear alignment of three points
@@ -15,8 +15,7 @@ import {alignmentController, angleController, shiftController, targetController}
 export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts) {
 
   //Thresholds
-  const sideKneeAngleMax = 105;
-  const sideKneeAngleMin = 75;
+  const sideKneeAngleThreshold = 0.002;
   const sideHipThreshold = 0.04;
   const sideBodyThreshold = 0.01;
 
@@ -45,10 +44,10 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
       const isLeftSide = poseLandmarks.leftLeg[0][1].y < poseLandmarks.rightLeg[0][1].y;
 
       // Condition 1: Leg Position
-      angleController(sideKneeAngleMax, sideKneeAngleMin, isLeftSide,
+      angleController(sideKneeAngleThreshold, isLeftSide,
         poseLandmarks.leftLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts,
         perspective, "sideLeftLegInfo")
-      angleController(sideKneeAngleMax, sideKneeAngleMin, isLeftSide,
+      angleController(sideKneeAngleThreshold, isLeftSide,
         poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts,
         perspective, "sideRightLegInfo")
 

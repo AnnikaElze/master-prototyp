@@ -1,4 +1,3 @@
-import * as THREE from "three";
 import {angleOverlay, skeletonOverlay, targetOverlay} from "./poseOverlays";
 
 const red = '#D32F2F90';
@@ -6,25 +5,22 @@ const redOpaque = '#D32F2F';
 const green = '#689F3890';
 const greenOpaque = '#689F38';
 
-export function angleController (thresholdMax, thresholdMin, isLeftSide, landmarks, connector,
+export function angleController (threshold, isLeftSide, landmarks, connector,
                                  drawingUtils, ctx, handleFeedbackTexts, perspective, feedback) {
 
-  const firstJoint = new THREE.Vector3(landmarks[0][0].x,
-    landmarks[0][0].y, 0);
-  const centerJoint = new THREE.Vector3(landmarks[0][1].x,
-    landmarks[0][1].y, 0);
-  const secondJoint = new THREE.Vector3(landmarks[0][2].x,
-    landmarks[0][2].y, 0);
+  const firstLimb = {
+    x: landmarks[0][0].x - landmarks[0][1].x,
+    y: landmarks[0][0].y - landmarks[0][1].y,
+  }
 
-  const firstLimb = centerJoint.clone().sub(firstJoint);
-  const secondLimb = centerJoint.clone().sub(secondJoint);
+  const secondLimb = {
+    x: landmarks[0][2].x - landmarks[0][1].x,
+    y: landmarks[0][2].y - landmarks[0][1].y,
+  }
 
-  firstLimb.normalize();
-  secondLimb.normalize();
-  const angleInRadians = firstLimb.angleTo(secondLimb);
-  const angleInDegrees = THREE.MathUtils.radToDeg(angleInRadians);
+  const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
 
-  if (angleInDegrees > thresholdMax || angleInDegrees < thresholdMin) {
+  if (Math.abs(scalarProduct) > threshold) {
     angleOverlay(red, isLeftSide, landmarks, connector, drawingUtils, ctx);
     handleFeedbackTexts(perspective, feedback, "warning");
   } else {

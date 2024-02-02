@@ -3,6 +3,7 @@ import {Lunge, Handstand} from "./usecaseUtils/textMessages";
 import {checkLungePosition} from "./usecaseUtils/lungeStates";
 import InfoFile from "./InfoFile";
 import Countdown from "./Countdown";
+import {checkHandstandState} from "./usecaseUtils/handstandStates";
 
 /**
  * @parent Feedback
@@ -11,9 +12,14 @@ import Countdown from "./Countdown";
  * @return TextFiles in the type and order required by the current exerciseState
  */
 
-function checkState (feedbackTexts, controlFeedbackTexts, handleExerciseState, exerciseState) {
+function checkState (feedbackTexts, controlFeedbackTexts, handleExerciseState, exerciseState, usecase) {
   const checkFeedbackTexts = { ...feedbackTexts, ...controlFeedbackTexts };
-  handleExerciseState(checkLungePosition(checkFeedbackTexts, exerciseState));
+  if (usecase === "lunge") {
+    handleExerciseState(checkLungePosition(checkFeedbackTexts, exerciseState));
+  } else {
+    handleExerciseState(checkHandstandState(checkFeedbackTexts, exerciseState));
+  }
+
 }
 
 function TextViewer(props) {
@@ -21,7 +27,7 @@ function TextViewer(props) {
   if (props.usecase === "Quadrizeps Dehnung") {
     // State 1: Pose Correction
     if (props.exerciseState === 0) {
-      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState);
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "lunge");
 
       return (
         <>
@@ -62,9 +68,9 @@ function TextViewer(props) {
   }
   // Usecase: Handstand
   else {
-    // State 1: Starting Position
-    if (props.exerciseState === 0) {
-      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState);
+    // State 1 & 3: Starting Position, Handstand Position
+    if (props.exerciseState === 0 || props.exerciseState === 2) {
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
 
       return (
         <>
@@ -77,10 +83,17 @@ function TextViewer(props) {
       )
     }
     // State 2: Dynamic movement
-
+    else if (props.exerciseState === 1 && props.textViewer === 1) {
+      return (
+        <>
+          <div className="feedbackText">
+            <InfoFile type={"info"} info={Handstand.state2.warning}/>
+          </div>
+        </>
+      )
+    }
     // State 3: Handstand
 
-    // State 4: Finish
   }
 
 }

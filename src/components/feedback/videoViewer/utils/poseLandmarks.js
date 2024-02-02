@@ -43,6 +43,23 @@ export default function PoseLandmarks (bodyLandmarks) {
           y: (bodyLandmarks[0][11].y + bodyLandmarks[0][12].y)/2,
           z: (bodyLandmarks[0][11].z + bodyLandmarks[0][12].z)/2
         }]],
+        body: [[
+          {
+            x: (bodyLandmarks[0][23].x + bodyLandmarks[0][24].x)/2,
+            y: (bodyLandmarks[0][23].y + bodyLandmarks[0][24].y)/2,
+            z: (bodyLandmarks[0][23].z + bodyLandmarks[0][24].z)/2
+          },
+          {
+            x: (bodyLandmarks[0][11].x + bodyLandmarks[0][12].x)/2,
+            y: (bodyLandmarks[0][11].y + bodyLandmarks[0][12].y)/2,
+            z: (bodyLandmarks[0][11].z + bodyLandmarks[0][12].z)/2
+          }
+        ]],
+        feetCenter: [[{
+          x: (bodyLandmarks[0][27].x + bodyLandmarks[0][28].x)/2,
+          y: (bodyLandmarks[0][27].y + bodyLandmarks[0][28].y)/2,
+          z: (bodyLandmarks[0][27].z + bodyLandmarks[0][28].z)/2,
+        }]],
         legConnector: [
           {start: 0, end: 1},
           {start: 1, end: 2},

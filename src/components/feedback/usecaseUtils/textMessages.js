@@ -78,13 +78,17 @@ export const Handstand = {
     warning: "Beine",
     success: "Beine"
   },
+  state3sideLeftLegInfo: {
+    warning: "Linkes Bein",
+    success: "Linkes Bein"
+  },
+  state3sideRightLegInfo: {
+    warning: "Rechtes Bein",
+    success: "Rechtes Bein"
+  },
   state3sideFeetInfo: {
     warning: "Füße",
     success: "Füße"
-  },
-  state3backArmInfo: {
-    warning: "Arm",
-    success: "Arm"
   },
   state3backShoulderInfo: {
     warning: "Schulter",
@@ -93,10 +97,6 @@ export const Handstand = {
   state3backHipInfo: {
     warning: "Hüfte",
     success: "Hüfte"
-  },
-  state3backLegInfo: {
-    warning: "Beine",
-    success: "Beine"
   },
   state3backFeetInfo: {
     warning: "Füße",

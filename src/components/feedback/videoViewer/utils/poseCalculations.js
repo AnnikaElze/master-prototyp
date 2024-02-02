@@ -1,4 +1,9 @@
-import {angleOverlay, skeletonOverlay, straightOverlay, targetOverlay} from "./poseOverlays";
+import {
+  angleOverlay,
+  doubleTargetOverlay,
+  skeletonOverlay,
+  targetOverlay
+} from "./poseOverlays";
 
 const red = '#D32F2F90';
 const redOpaque = '#D32F2F';
@@ -63,6 +68,20 @@ export function targetController (referenceValue, targetValue, threshold, start,
   }
 }
 
+export function doubleTargetController (referenceValue, targetValue1, targetValue2, threshold, target, start1, start2,
+                                        ctx, handleFeedbackTexts, perspective, feedback) {
+  const shift1 = Math.abs(referenceValue - targetValue1);
+  const shift2 = Math.abs(referenceValue - targetValue2);
+
+  if (shift1 > threshold && shift2 > threshold) {
+    doubleTargetOverlay(true, red, start1, start2, target, ctx);
+    handleFeedbackTexts(perspective,  feedback, "warning");
+  } else {
+    doubleTargetOverlay(false, green, start1, start2, target, ctx);
+    handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
 export function straightController (threshold, landmarks, connector, drawingUtils, ctx,
                                     handleFeedbackTexts, perspective, feedback) {
 
@@ -79,7 +98,15 @@ export function straightController (threshold, landmarks, connector, drawingUtil
     skeletonOverlay(redOpaque, landmarks,connector,drawingUtils)
     handleFeedbackTexts(perspective, feedback, "warning");
   } else {
-    skeletonOverlay(redOpaque, landmarks,connector,drawingUtils)
+    skeletonOverlay(greenOpaque, landmarks,connector,drawingUtils)
+    handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
+export function momentumController (threshold, center, start, handleFeedbackTexts, perspective, feedback){
+  if (center.y < start.y - threshold) {
+    handleFeedbackTexts(perspective, feedback, "warning");
+  } else {
     handleFeedbackTexts(perspective, feedback, "success");
   }
 }

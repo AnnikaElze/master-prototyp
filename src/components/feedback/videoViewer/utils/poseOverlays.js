@@ -61,6 +61,67 @@ export function targetOverlay (isArrow, color, start, target, ctx) {
   }
 }
 
+export function doubleTargetOverlay (isArrow, color, start1, start2, target, ctx){
+  const start1X = start1.x * ctx.canvas.width;
+  const start1Y = start1.y * ctx.canvas.height;
+
+  const start2X = start2.x * ctx.canvas.width;
+  const start2Y = start2.y * ctx.canvas.height;
+
+  const targetX = target.x * ctx.canvas.width;
+  const targetY = target.y * ctx.canvas.height;
+
+  ctx.beginPath();
+  ctx.arc(start1X, start1Y, 10, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.arc(start2X, start2Y, 10, 0, 2 * Math.PI);
+  ctx.fillStyle = color;
+  ctx.fill();
+  ctx.closePath();
+
+  ctx.beginPath();
+  ctx.arc(targetX, targetY, 10, 0, 2 * Math.PI);
+  ctx.fillStyle = '#689F3890';
+  ctx.fill();
+  ctx.closePath();
+
+  if (isArrow) {
+    ctx.beginPath();
+    ctx.moveTo(start1X, start1Y);
+    ctx.lineTo(targetX, targetY);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const angle1 = Math.atan2(targetY - start1Y, targetX - start1X);
+    ctx.beginPath();
+    ctx.moveTo(targetX, targetY);
+    ctx.lineTo(targetX - 10 * Math.cos(angle1 - Math.PI / 6), targetY - 10 * Math.sin(angle1 - Math.PI / 6));
+    ctx.lineTo(targetX - 10 * Math.cos(angle1 + Math.PI / 6), targetY - 10 * Math.sin(angle1 + Math.PI / 6));
+    ctx.fillStyle = 'white';
+    ctx.fill();
+
+    ctx.beginPath();
+    ctx.moveTo(start2X, start2Y);
+    ctx.lineTo(targetX, targetY);
+    ctx.strokeStyle = 'white';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+
+    const angle2 = Math.atan2(targetY - start2Y, targetX - start2X);
+    ctx.beginPath();
+    ctx.moveTo(targetX, targetY);
+    ctx.lineTo(targetX - 10 * Math.cos(angle2 - Math.PI / 6), targetY - 10 * Math.sin(angle2 - Math.PI / 6));
+    ctx.lineTo(targetX - 10 * Math.cos(angle2 + Math.PI / 6), targetY - 10 * Math.sin(angle2 + Math.PI / 6));
+    ctx.fillStyle = 'white';
+    ctx.fill();
+  }
+}
+
 export function straightOverlay (color, landmarks, connector, drawingUtils, ctx) {
   //drawingUtils.drawLandmarks(landmarks[0][1], {color: color, radius: 20});
 

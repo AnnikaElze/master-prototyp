@@ -27,17 +27,17 @@ const theme = createTheme({
     body1: {
       fontFamily: 'UniversLTStd-Light',
       color: '#E6E6E6',
-      fontSize: '13px',
+      fontSize: '14px',
       '@media (min-width:600px)': {
-        fontSize: '16px',
+        fontSize: '17px',
       },
     },
     body2: {
       fontFamily: 'UniversLTStd-Light',
       color: '#E6E6E6',
-      fontSize: '12px',
+      fontSize: '14px',
       '@media (min-width:600px)': {
-        fontSize: '15px',
+        fontSize: '17px',
       },
       margin: 10,
     },

@@ -1,8 +1,7 @@
 export function checkHandstandState (feedbackTexts, exerciseState) {
   // State 1: Starting Position
   if (exerciseState === 0){
-    if (feedbackTexts.state1sideArmInfo === "success" && feedbackTexts.state1sideShoulderInfo === "success"
-      && feedbackTexts.state1backArmInfo === "success" && feedbackTexts.state1backShoulderInfo === "success") {
+    if (Object.values(feedbackTexts).length === 4 && !Object.values(feedbackTexts).includes("warning")) {
       return exerciseState + 1;
     } else {return exerciseState;}
   }

@@ -17,7 +17,7 @@ function FeedbackText (props) {
   return(
     <>
       <div className="infoText textBox">
-        <Typography variant={'body2'} className="textBoxText">{newlineText(props.info)}</Typography>
+        <Typography key={props.info} variant={'body2'} className="textBoxText">{newlineText(props.info)}</Typography>
       </div>
     </>
   )

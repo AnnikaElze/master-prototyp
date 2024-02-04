@@ -60,13 +60,11 @@ function Feedback (props) {
     }
   }
 
-  const handleExerciseState = (state) => {
-    if (props.usecase === "Pole Handstand" && state !== exerciseState){
-      setExerciseState(state);
+  const handleExerciseState = (newState) => {
+    if (newState !== exerciseState){
       setFeedbackTexts1({});
       setFeedbackTexts2({});
-    } else if (state !== exerciseState) {
-      setExerciseState(state);
+      setExerciseState(newState);
     }
   }
 

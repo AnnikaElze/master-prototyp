@@ -1,6 +1,6 @@
 import React, {useEffect, useRef} from "react";
 import {FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
-import pose_landmarker_task from "../../../shared/models/pose_landmarker_full.task";
+import pose_landmarker_task from "../../../../shared/models/pose_landmarker_full.task";
 
 /**
  * @parent VideoViewer
@@ -9,7 +9,7 @@ import pose_landmarker_task from "../../../shared/models/pose_landmarker_full.ta
  * @return video (with PoseLandmarker by mediapipe for body tracking)
  */
 
-function BodyLandmarks (props) {
+function BodyLandmarks1 (props) {
   const videoRef = useRef(null);
 
   useEffect(() => {
@@ -44,7 +44,7 @@ function BodyLandmarks (props) {
         const detections = poseLandmarker.detectForVideo(videoRef.current, performance.now());
 
         if (detections.landmarks) {
-          props.handleLandmarks(detections.landmarks);
+          props.handleState(detections.landmarks);
         }
       }
       requestAnimationFrame(detectPoses);
@@ -81,4 +81,4 @@ function BodyLandmarks (props) {
   )
 }
 
-export default BodyLandmarks;
+export default BodyLandmarks1;

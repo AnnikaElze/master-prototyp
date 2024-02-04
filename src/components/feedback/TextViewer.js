@@ -68,8 +68,8 @@ function TextViewer(props) {
   }
   // Usecase: Handstand
   else {
-    // State 1 & 3: Starting Position, Handstand Position
-    if (props.exerciseState === 0 || props.exerciseState === 2) {
+    // State 1: Starting Position, Handstand Position
+    if (props.exerciseState === 0) {
       checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
 
       return (
@@ -84,6 +84,8 @@ function TextViewer(props) {
     }
     // State 2: Dynamic movement
     else if (props.exerciseState === 1 && props.textViewer === 1) {
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
+
       return (
         <>
           <div className="feedbackText">
@@ -92,7 +94,17 @@ function TextViewer(props) {
         </>
       )
     }
-    // State 3: Handstand
+    else if (props.exerciseState === 2) {
+      return (
+        <>
+          {Object.keys(props.feedbackTexts).map(key => (
+            <div className="feedbackText">
+              <TextFile type={props.feedbackTexts[key]} info={Handstand[key][props.feedbackTexts[key]]}/>
+            </div>
+          ))}
+        </>
+      )
+    }
 
   }
 

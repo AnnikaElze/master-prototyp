@@ -103,8 +103,8 @@ export function straightController (threshold, landmarks, connector, drawingUtil
   }
 }
 
-export function momentumController (threshold, center, start, handleFeedbackTexts, perspective, feedback){
-  if (center.y < start.y - threshold) {
+export function momentumController (threshold, center, limb, handleFeedbackTexts, perspective, feedback){
+  if (center < limb) {
     handleFeedbackTexts(perspective, feedback, "warning");
   } else {
     handleFeedbackTexts(perspective, feedback, "success");

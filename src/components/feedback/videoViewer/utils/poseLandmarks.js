@@ -25,7 +25,7 @@ export default function PoseLandmarks (bodyLandmarks) {
         ]],
         leftArm: [[
           bodyLandmarks[0][11],
-          bodyLandmarks[0][23],
+          bodyLandmarks[0][13],
           bodyLandmarks[0][15]
         ]],
         rightArm: [[
@@ -34,9 +34,9 @@ export default function PoseLandmarks (bodyLandmarks) {
           bodyLandmarks[0][16]
         ]],
         hipCenter: [[{
-            x: (bodyLandmarks[0][23].x + bodyLandmarks[0][24].x)/2,
-            y: (bodyLandmarks[0][23].y + bodyLandmarks[0][24].y)/2,
-            z: (bodyLandmarks[0][23].z + bodyLandmarks[0][24].z)/2
+          x: (bodyLandmarks[0][23].x + bodyLandmarks[0][24].x)/2,
+          y: (bodyLandmarks[0][23].y + bodyLandmarks[0][24].y)/2,
+          z: (bodyLandmarks[0][23].z + bodyLandmarks[0][24].z)/2
         }]],
         shoulderCenter: [[{
           x: (bodyLandmarks[0][11].x + bodyLandmarks[0][12].x)/2,

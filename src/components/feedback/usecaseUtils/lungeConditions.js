@@ -1,5 +1,9 @@
 import PoseLandmarks from "../videoViewer/utils/poseLandmarks";
-import {alignmentController, angleController, shiftController, targetController} from "../videoViewer/utils/poseCalculations";
+import {
+  doubleAlignmentController, doubleAngleController,
+  shiftController,
+  targetController
+} from "../videoViewer/utils/poseCalculations";
 
 /**
  * @parent VideoViewer
@@ -33,12 +37,9 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
       const isLeftSide = poseLandmarks.leftLeg[0][1].y < poseLandmarks.rightLeg[0][1].y;
 
       // Condition 1: Leg Position
-      angleController(sideKneeAngleThreshold, isLeftSide,
-        poseLandmarks.leftLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts,
-        perspective, "sideLeftLegInfo")
-      angleController(sideKneeAngleThreshold, isLeftSide,
-        poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx, handleFeedbackTexts,
-        perspective, "sideRightLegInfo")
+      doubleAngleController(sideKneeAngleThreshold, isLeftSide,
+        poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx,
+        handleFeedbackTexts, perspective, "sideLegInfo")
 
       // Condition 2: Hip Position
       shiftController(poseLandmarks.hip[0][0].x, poseLandmarks.hip[0][1].x, sideHipThreshold,
@@ -59,10 +60,10 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
     // Perspective 2: Back view
     else {
       // Condition 1: Leg Position
-      alignmentController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x, backLegThreshold, poseLandmarks.leftLeg,
-        poseLandmarks.legConnector, drawingUtils, handleFeedbackTexts, perspective, "backLeftLegInfo")
-      alignmentController(poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x, backLegThreshold, poseLandmarks.rightLeg,
-        poseLandmarks.legConnector, drawingUtils, handleFeedbackTexts, perspective, "backRightLegInfo")
+      doubleAlignmentController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x,
+        poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x,
+        backLegThreshold, poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils,
+        handleFeedbackTexts, perspective, "backLegInfo")
 
       // Condition 2: Hip Position
       shiftController(poseLandmarks.hip[0][0].y, poseLandmarks.hip[0][1].y, backHipThreshold,

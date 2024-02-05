@@ -10,20 +10,35 @@ const redOpaque = '#D32F2F';
 const green = '#689F3890';
 const greenOpaque = '#689F38';
 
-export function angleController (threshold, isLeftSide, landmarks, connector,
+export function doubleAngleController (threshold, isLeftSide, landmarks1, landmarks2, connector,
                                  drawingUtils, ctx, handleFeedbackTexts, perspective, feedback) {
 
-  const firstLimb = limbCalculation(landmarks[0][0], landmarks[0][1])
-  const secondLimb = limbCalculation(landmarks[0][2], landmarks[0][1])
+  const firstLimb1 = limbCalculation(landmarks1[0][0], landmarks1[0][1])
+  const secondLimb1 = limbCalculation(landmarks1[0][2], landmarks1[0][1])
 
-  const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
+  const firstLimb2 = limbCalculation(landmarks2[0][0], landmarks2[0][1])
+  const secondLimb2 = limbCalculation(landmarks2[0][2], landmarks2[0][1])
 
-  if (Math.abs(scalarProduct) > threshold) {
-    angleOverlay(red, isLeftSide, landmarks, connector, drawingUtils, ctx);
+  const scalarProduct1 = firstLimb1.x * secondLimb1.x + firstLimb1.y * secondLimb1.y;
+  const scalarProduct2 = firstLimb2.x * secondLimb2.x + firstLimb2.y * secondLimb2.y;
+
+  if (Math.abs(scalarProduct1) > threshold) {
+    angleOverlay(red, isLeftSide, landmarks1, connector, drawingUtils, ctx);
     handleFeedbackTexts(perspective, feedback, "warning");
+    if (Math.abs(scalarProduct2) > threshold) {
+      angleOverlay(red, isLeftSide, landmarks2, connector, drawingUtils, ctx);
+    } else {
+      angleOverlay(green, isLeftSide, landmarks2, connector, drawingUtils, ctx);
+    }
   } else {
-    angleOverlay(green, isLeftSide, landmarks, connector, drawingUtils, ctx);
-    handleFeedbackTexts(perspective, feedback, "success");
+    angleOverlay(green, isLeftSide, landmarks1, connector, drawingUtils, ctx);
+    if (Math.abs(scalarProduct2) > threshold) {
+      angleOverlay(red, isLeftSide, landmarks2, connector, drawingUtils, ctx);
+      handleFeedbackTexts(perspective, feedback, "warning");
+    } else {
+      angleOverlay(green, isLeftSide, landmarks2, connector, drawingUtils, ctx);
+      handleFeedbackTexts(perspective, feedback, "success");
+    }
   }
 
 }
@@ -55,6 +70,49 @@ export function alignmentController (a, b, c, threshold, landmarks, connector, d
   }
 }
 
+export function advancedAlignmentController (a, b, c, d, threshold, landmarks, connector, drawingUtils,
+                                             handleFeedbackTexts, perspective, feedback) {
+  const shift1 = Math.abs(a - b);
+  const shift2 = Math.abs(b - c);
+  const shift3 = Math.abs(c - d);
+
+  if (shift1 > threshold || shift2 > threshold || shift3 > threshold) {
+    skeletonOverlay(redOpaque, landmarks, connector, drawingUtils);
+    handleFeedbackTexts(perspective, feedback, "warning");
+  } else {
+    skeletonOverlay(greenOpaque, landmarks, connector, drawingUtils);
+    handleFeedbackTexts(perspective, feedback, "success");
+  }
+}
+
+export function doubleAlignmentController (a1, b1, c1, a2, b2, c2, threshold, landmarks1, landmarks2, connector,
+                                           drawingUtils, handleFeedbackTexts, perspective, feedback) {
+  const shift11 = Math.abs(a1 - b1);
+  const shift12 = Math.abs(b1 - c1);
+
+  const shift21 = Math.abs(a2 - b2);
+  const shift22 = Math.abs(b2 - c2);
+
+  if (shift11 > threshold || shift12 > threshold) {
+    skeletonOverlay(redOpaque, landmarks1, connector, drawingUtils);
+    handleFeedbackTexts(perspective, feedback, "warning");
+    if (shift21 > threshold || shift22 > threshold) {
+      skeletonOverlay(redOpaque, landmarks2, connector, drawingUtils);
+    } else {
+      skeletonOverlay(greenOpaque, landmarks2, connector, drawingUtils);
+    }
+  } else {
+    skeletonOverlay(greenOpaque, landmarks1, connector, drawingUtils);
+    if (shift21 > threshold || shift22 > threshold) {
+      skeletonOverlay(redOpaque, landmarks2, connector, drawingUtils);
+      handleFeedbackTexts(perspective, feedback, "warning");
+    } else {
+      skeletonOverlay(greenOpaque, landmarks2, connector, drawingUtils);
+      handleFeedbackTexts(perspective, feedback, "success");
+    }
+  }
+}
+
 export function targetController (referenceValue, targetValue, threshold, start, target, ctx,
                                   handleFeedbackTexts, perspective, feedback) {
   const shift = Math.abs(referenceValue - targetValue);
@@ -78,27 +136,6 @@ export function doubleTargetController (referenceValue, targetValue1, targetValu
     handleFeedbackTexts(perspective,  feedback, "warning");
   } else {
     doubleTargetOverlay(false, green, start1, start2, target, ctx);
-    handleFeedbackTexts(perspective, feedback, "success");
-  }
-}
-
-export function straightController (threshold, landmarks, connector, drawingUtils, ctx,
-                                    handleFeedbackTexts, perspective, feedback) {
-
-  const firstLimb = limbCalculation(landmarks[0][0], landmarks[0][1])
-  const secondLimb = limbCalculation(landmarks[0][2], landmarks[0][1])
-
-  const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
-  const amountProduct = Math.sqrt(Math.pow(firstLimb.x, 2) + Math.pow(firstLimb.y, 2))
-    * Math.sqrt(Math.pow(secondLimb.x, 2) + Math.pow(secondLimb.y, 2))
-
-  const cos = 1 - Math.abs(scalarProduct/amountProduct);
-
-  if (cos > threshold) {
-    skeletonOverlay(redOpaque, landmarks,connector,drawingUtils)
-    handleFeedbackTexts(perspective, feedback, "warning");
-  } else {
-    skeletonOverlay(greenOpaque, landmarks,connector,drawingUtils)
     handleFeedbackTexts(perspective, feedback, "success");
   }
 }

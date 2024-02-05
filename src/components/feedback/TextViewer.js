@@ -89,12 +89,14 @@ function TextViewer(props) {
       return (
         <>
           <div className="feedbackText">
-            <InfoFile type={"info"} info={Handstand.state2.warning}/>
+            <TextFile type={"info"} info={Handstand.state2Info}/>
+          </div>
+          <div className="feedbackText">
+            <InfoFile type={"info"} info={Handstand.state2Hint}/>
           </div>
         </>
       )
-    }
-    else if (props.exerciseState === 2) {
+    } else if (props.exerciseState === 2) {
       return (
         <>
           {Object.keys(props.feedbackTexts).map(key => (

@@ -1,9 +1,10 @@
 import PoseLandmarks from "../videoViewer/utils/poseLandmarks";
 import {
+  advancedAlignmentController,
+  alignmentController, doubleAlignmentController,
   doubleTargetController,
   momentumController,
   shiftController,
-  straightController,
   targetController
 } from "../videoViewer/utils/poseCalculations";
 
@@ -18,15 +19,16 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
 
   if (bodyLandmarks[0] !== undefined) {
     const floorArm = (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftArm :  poseLandmarks.rightArm;
-    
+    const floorLeg =  (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftLeg :  poseLandmarks.rightLeg;
+
     // Perspective 1: Side view
     if (perspective === 1){
       // State 1: Starting Position
       if (exerciseState === 0) {
 
         // Condition 1: Arm Position
-        straightController(straightThreshold, floorArm, poseLandmarks.armConnector,
-          drawingUtils, ctx, handleFeedbackTexts, perspective, "state1sideArmInfo")
+        alignmentController(floorArm[0][0].x, floorArm[0][1].x, floorArm[0][2].x, straightThreshold, floorArm,
+          poseLandmarks.armConnector, drawingUtils, handleFeedbackTexts, perspective, "state1sideArmInfo")
 
         // Condition 2: Shoulder Position
 
@@ -48,38 +50,32 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
       }
       // State 3: Handstand
       else if (exerciseState === 2) {
-        // Condition 1: Arm Position
-        straightController(straightThreshold, floorArm, poseLandmarks.armConnector,
-          drawingUtils, ctx, handleFeedbackTexts, perspective, "state3sideArmInfo")
+        // Condition 1: Body Position
+        const frontBody = [[
+          floorArm[0][2],
+          floorArm[0][1],
+          floorArm[0][0],
+          floorLeg[0][0]
+        ]]
 
-        // Condition 2: Shoulder Position
-        const shoulderTarget = {
-          x: floorArm[0][2].x,
-          y: floorArm[0][0].y,
-          z: floorArm[0][0].z,
-        }
+        const frontBodyConnector = [
+          {start: 0, end: 1},
+          {start: 1, end: 2},
+          {start: 2, end: 3},
+          {start: 3, end: 4},
+        ]
 
-        targetController(floorArm[0][2].x, floorArm[0][0].x, targetThreshold, floorArm[0][0], shoulderTarget, ctx,
-          handleFeedbackTexts, perspective, "state3sideShoulderInfo")
+        advancedAlignmentController(frontBody[0][0].x, frontBody[0][1].x, frontBody[0][2].x, frontBody[0][3].x,
+          shiftThreshold, frontBody,frontBodyConnector, drawingUtils,
+          handleFeedbackTexts, perspective, "state3sideBodyInfo")
 
-        // Condition 3: Hip Position
-        const hipTarget = {
-          x: floorArm[0][2].x,
-          y: poseLandmarks.hipCenter[0][0].y,
-          z: poseLandmarks.hipCenter[0][0].z,
-        }
+        // Condition 2: Leg Position
+        doubleAlignmentController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x,
+          poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x,
+          straightThreshold, poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils,
+          handleFeedbackTexts, perspective, "state3sideLegInfo")
 
-        targetController(floorArm[0][2].x, poseLandmarks.hipCenter[0][0].x, targetThreshold,
-          poseLandmarks.hipCenter[0][0], hipTarget, ctx,
-          handleFeedbackTexts, perspective, "state3sideHipInfo")
-
-        // Condition 4: Leg Position
-        straightController(straightThreshold, poseLandmarks.leftLeg, poseLandmarks.legConnector,
-          drawingUtils, ctx, handleFeedbackTexts, perspective, "state3sideLeftLegInfo");
-        straightController(straightThreshold, poseLandmarks.rightLeg, poseLandmarks.legConnector,
-          drawingUtils, ctx, handleFeedbackTexts, perspective, "state3sideRightLegInfo");
-
-        // Condition 5: Feet Position
+        // Condition 3: Feet Position
         const feetTarget = {
           x: poseLandmarks.shoulderCenter[0][0].x,
           y: poseLandmarks.feetCenter[0][0].y,
@@ -118,17 +114,15 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
       }
       // State 3: Handstand
       else if (exerciseState === 2) {
-        // Condition 1: Arm Position
-
-        // Condition 2: Shoulder Position
+        // Condition 1: Shoulder Position
         shiftController(poseLandmarks.shoulders[0][0].y, poseLandmarks.shoulders[0][1].y, shiftThreshold, poseLandmarks.shoulders,
           poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, perspective, "state3backShoulderInfo")
 
-        // Condition 3: Hip Position
+        // Condition 2: Hip Position
         shiftController(poseLandmarks.shoulderCenter[0][0].x, poseLandmarks.hipCenter[0][0].x, shiftThreshold, poseLandmarks.body,
           poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, perspective, "state3backHipInfo")
 
-        // Condition 5: Feet Position
+        // Condition 3: Feet Position
         const feetTarget = {
           x: poseLandmarks.shoulderCenter[0][0].x,
           y: poseLandmarks.feetCenter[0][0].y,

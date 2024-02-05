@@ -1,5 +1,5 @@
 import {useRef} from "react";
-import {DrawingUtils} from "@mediapipe/tasks-vision";
+import {DrawingUtils, PoseLandmarker} from "@mediapipe/tasks-vision";
 import lungeConditions from "./usecaseUtils/lungeConditions";
 import handstandConditions from "./usecaseUtils/handstandConditions";
 import BodyLandmarks0 from "./videoViewer/bodyLandmarker/BodyLandmarks0";
@@ -57,8 +57,13 @@ function VideoViewer (props) {
 
     if (props.usecase === "Quadrizeps Dehnung") {
       lungeConditions(ctx, drawingUtils, props.perspective, bodyLandmarks, props.handleFeedbackTexts);
-    } else {
+    } else if (props.usecase === "Pole Handstand") {
       handstandConditions(ctx, drawingUtils, props.perspective, bodyLandmarks, props.handleFeedbackTexts, state);
+    } else {
+      // bodyLandmarks.forEach(landmark => {
+      //   drawingUtils.drawConnectors(landmark, PoseLandmarker.POSE_CONNECTIONS, {color: 'white', lineWidth: 1.5});
+      //   drawingUtils.drawLandmarks(landmark, {color: 'white', radius: 2.5});
+      // });
     }
   }
 

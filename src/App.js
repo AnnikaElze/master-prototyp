@@ -22,16 +22,39 @@ function App() {
   const [root, setRoot] = useState(true);
   const [usecase, setUsecase] = useState("");
 
+  const [camera1, setCamera1] = useState();
+  const [camera2, setCamera2] = useState();
+
+  const [reset1, setReset1] = useState(false);
+  const [reset2, setReset2] = useState(false);
+
   let handleRoot = (usecase) => {
       setUsecase(usecase);
       setRoot(!root);
   }
 
+  const handleCamera1 = (event) => {
+    setCamera1(event.target.value);
+    setReset1(true);
+    setInterval(() => {
+      setReset1(false);
+    }, 1000);
+  };
+
+  const handleCamera2 = (event) => {
+    setCamera2(event.target.value);
+    setReset2(true);
+    setInterval(() => {
+      setReset2(false);
+    }, 3000);
+  };
+
   let rootDecision = () => {
     if (root) {
       return <Homepage handleRoot={handleRoot}/>
     } else {
-      return <Feedback handleRoot={handleRoot} usecase={usecase}/>}
+      return <Feedback handleRoot={handleRoot} usecase={usecase} handleCamera1={handleCamera1} handleCamera2={handleCamera2}
+      camera1={camera1} camera2={camera2} reset1={reset1} reset2={reset2}/>}
     }
 
   return (

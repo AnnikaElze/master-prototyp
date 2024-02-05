@@ -16,6 +16,7 @@ function Homepage (props) {
   return(
     <>
       <div style={homepageStyle}>
+        <RootButton usecase={"Setup"} handleRoot={props.handleRoot}/>
         <RootButton usecase={"Quadrizeps Dehnung"} handleRoot={props.handleRoot}/>
         <RootButton usecase={"Pole Handstand"} handleRoot={props.handleRoot}/>
       </div>

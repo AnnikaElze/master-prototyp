@@ -1,27 +1,22 @@
 export const Lunge = {
-  sideLeftLegInfo: {
-    warning: "Knie links: Achte auf einen rechten Winkel!",
-    success: "Knie links"
-  },
-  sideRightLegInfo: {
-    warning: "Knie rechts: Achte auf einen rechten Winkel!",
-    success: "Knie rechts"
+  // State 1: Start Position Side View
+  sideLegInfo: {
+    warning: "Knie: Achte auf einen rechten Winkel an beiden Kniegelenken!",
+    success: "Knie"
   },
   sideHipInfo: {
-    warning: "Hüftposition: Beide Hüftknochen sollen nach vorn zeigen!",
-    success: "Hüftposition"
+    warning: "Hüfte: Beide Hüftknochen sollen nach vorn zeigen!",
+    success: "Hüfte"
   },
   sideBodyInfo: {
-    warning: "Oberkörperposition: Kippe nicht nach vorn oder hinten!",
-    success: "Oberkörperposition"
+    warning: "Oberkörper: Kippe nicht nach vorn oder hinten!",
+    success: "Oberkörper"
   },
-  backLeftLegInfo: {
-    warning: "Bein links: Achte auf eine gerade Ausrichtung des linken Beins!",
-    success: "Bein links"
-  },
-  backRightLegInfo: {
-    warning: "Bein rechts: Achte auf eine gerade Ausrichtung des rechten Beins!",
-    success: "Bein rechts"
+
+  // State 1: Start Position Back View
+  backLegInfo: {
+    warning: "Beine: Achte auf eine gerade Ausrichtung deiner Beine!",
+    success: "Beine"
   },
   backHipInfo: {
     warning: "Hüfte: Beide Hüftknochen sollten auf der selbern Höhe sein.",
@@ -31,75 +26,72 @@ export const Lunge = {
     warning: "Oberkörper: Dein Oberkörper sollte nicht seitlich geneigt sein.",
     success: "Oberkörper"
   },
+
+  // State 2: Stretching
   correctInfo: "Du hast die korrekte Körperhaltung eingenommen. Sehr gut!",
-  stretchingInfo: "Kippe die Hüfte nach hinten indem du einen runden Rücken machst. " +
-    "Du kannst dich zur Unterstützung mit den Händen von deinem vorderen Oberschenkel weg drücken.\n" +
+  stretchingInfo: "Kippe die Hüfte nach hinten indem du einen runden Rücken machst.\n" +
     "Um die Dehnung zu intensivieren kannst du die Hüfte leicht nach vorn schieben, " +
-    "aber behalte dabei einen runden Rücken bei.\n" +
-    "Im linken Bild kannst du die Form deines Rückens beurteilen. Achte darauf, dass du kein Hohlkreuz hast!\n" +
+    "aber achte darauf, nicht in ein Hohlkreuz zu fallen.\n" +
     "Du solltest auf der Vorderseite deines hinteren Oberschenkels eine Dehnung spüren.",
+
+  // State 3: Release
   exitInfo: "Sehr gut! Du kannst die Dehnung langsam lösen."
 }
 
 export const Handstand = {
+  // State 1: Start Position Side View
   state1sideArmInfo: {
-    warning: "Arm (Boden): Strecke deinen Standarm aus!",
-    success: "Arm (Boden)"
+    warning: "Standarm: Strecke deinen Standarm aus!",
+    success: "Standarm"
   },
   state1sideShoulderInfo: {
     warning: "Schulter: Positioniere deine Schulter über dem Handgelenk",
     success: "Schulter"
   },
+
+  // State 1: Start Position Back View
   state1backArmInfo: {
-    warning: "Arme",
-    success: "Arme"
+    warning: "Hand: Positioniere deine Hand unter deiner Schulter.",
+    success: "Hand"
   },
   state1backShoulderInfo: {
-    warning: "Schulter",
+    warning: "Schulter: Positioniere die Schultern möglichst gerade!",
     success: "Schulter"
   },
+
+  // State 2: Dynamic Movement to Handstand
   state2: {
-    warning: "Schwung",
-    success: "Handstand"
+    warning: "",
+    success: ""
   },
-  state3sideArmInfo: {
-    warning: "Arm",
-    success: "Arm"
-  },
-  state3sideShoulderInfo: {
-    warning: "Schulter",
-    success: "Schulter"
-  },
-  state3sideHipInfo: {
-    warning: "Hüfte",
-    success: "Hüfte"
+  state2Info: "Du hast die korrekte Startposition eingenommen. Sehr gut!",
+  state2Hint: "Schwinge jetzt in den Handstand.",
+
+  // State 3: Handstand Side View
+  state3sideBodyInfo: {
+    warning: "Körper: Positioniere deine Schulter und Hüfte gerade über deinem Handgelenk!",
+    success: "Körper"
   },
   state3sideLegInfo: {
-    warning: "Beine",
+    warning: "Beine: Strecke deine Beine aus!",
     success: "Beine"
   },
-  state3sideLeftLegInfo: {
-    warning: "Linkes Bein",
-    success: "Linkes Bein"
-  },
-  state3sideRightLegInfo: {
-    warning: "Rechtes Bein",
-    success: "Rechtes Bein"
-  },
   state3sideFeetInfo: {
-    warning: "Füße",
+    warning: "Füße: Positioniere beide Füße über deiner Hüfte!",
     success: "Füße"
   },
+
+  // State 3: Handstand Back View
   state3backShoulderInfo: {
-    warning: "Schulter",
+    warning: "Schulter: Positioniere die Schultern möglichst gerade!",
     success: "Schulter"
   },
   state3backHipInfo: {
-    warning: "Hüfte",
+    warning: "Hüfte: Positioniere die Hüfte gerade über den Schultern!",
     success: "Hüfte"
   },
   state3backFeetInfo: {
-    warning: "Füße",
+    warning: "Füße: Positioniere beide Füße mittig über der Hüfte!",
     success: "Füße"
   },
 }

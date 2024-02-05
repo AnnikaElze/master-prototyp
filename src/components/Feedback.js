@@ -48,8 +48,8 @@ function Feedback (props) {
     if (newState !== exerciseState){
       setFeedbackTexts1({});
       setFeedbackTexts2({});
-      setExerciseState(newState);
       audio.play();
+      setExerciseState(newState);
     }
   }
 

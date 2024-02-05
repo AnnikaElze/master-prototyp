@@ -97,15 +97,17 @@ function TextViewer(props) {
         </>
       )
     } else if (props.exerciseState === 2) {
-      return (
-        <>
-          {Object.keys(props.feedbackTexts).map(key => (
-            <div className="feedbackText">
-              <TextFile type={props.feedbackTexts[key]} info={Handstand[key][props.feedbackTexts[key]]}/>
-            </div>
-          ))}
-        </>
-      )
+      if (props.feedbackTexts.hasOwnProperty('state2') !== true){
+        return (
+          <>
+            {Object.keys(props.feedbackTexts).map(key => (
+              <div className="feedbackText">
+                <TextFile type={props.feedbackTexts[key]} info={Handstand[key][props.feedbackTexts[key]]}/>
+              </div>
+            ))}
+          </>
+        )
+      }
     }
 
   }

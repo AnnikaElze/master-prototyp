@@ -140,11 +140,13 @@ export function doubleTargetController (referenceValue, targetValue1, targetValu
   }
 }
 
-export function momentumController (threshold, center, limb, handleFeedbackTexts, perspective, feedback){
-  if (center < limb) {
-    handleFeedbackTexts(perspective, feedback, "warning");
-  } else {
+export function momentumController (threshold, center, point1, point2, handleFeedbackTexts, perspective, feedback){
+  const reference = center - threshold;
+
+  if (reference > point1 && reference > point2) {
     handleFeedbackTexts(perspective, feedback, "success");
+  } else {
+    handleFeedbackTexts(perspective, feedback, "warning");
   }
 }
 

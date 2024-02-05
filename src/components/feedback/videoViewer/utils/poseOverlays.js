@@ -31,10 +31,10 @@ export function targetOverlay (isArrow, color, start, target, ctx) {
   const targetX = target.x * ctx.canvas.width;
   const targetY = target.y * ctx.canvas.height;
 
-  drawPosition(startX, startY, color, ctx);
   drawPosition(targetX, targetY, '#689F3890', ctx)
 
   if (isArrow) {
+    drawPosition(startX, startY, color, ctx);
     drawArrow(startX, startY, targetX, targetY, ctx)
   }
 }
@@ -49,11 +49,11 @@ export function doubleTargetOverlay (isArrow, color, start1, start2, target, ctx
   const targetX = target.x * ctx.canvas.width;
   const targetY = target.y * ctx.canvas.height;
 
-  drawPosition(start1X, start1Y, color, ctx)
-  drawPosition(start2X, start2Y, color, ctx)
-  drawPosition(targetX, targetY, '#689F3890', ctx)
+  drawPosition(targetX, targetY, '#689F3890', ctx);
 
   if (isArrow) {
+    drawPosition(start1X, start1Y, color, ctx);
+    drawPosition(start2X, start2Y, color, ctx);
     drawArrow(start1X, start1Y, targetX, targetY, ctx);
     drawArrow(start2X, start2Y, targetX, targetY, ctx);
   }

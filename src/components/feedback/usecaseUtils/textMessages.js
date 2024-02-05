@@ -60,10 +60,6 @@ export const Handstand = {
   },
 
   // State 2: Dynamic Movement to Handstand
-  state2: {
-    warning: "",
-    success: ""
-  },
   state2Info: "Du hast die korrekte Startposition eingenommen. Sehr gut!",
   state2Hint: "Schwinge jetzt in den Handstand.",
 

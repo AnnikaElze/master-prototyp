@@ -9,11 +9,23 @@ import {
 } from "../videoViewer/utils/poseCalculations";
 
 export default function handstandConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, exerciseState) {
-  //Thresholds
-  const straightThreshold = 0.02;
-  const targetThreshold = 0.02;
-  const shiftThreshold = 0.02;
-  const momentumThreshold = 0.05;
+  //Thresholds State 1
+  const sideArmThreshold0 = 0.015;
+  const sideShoulderThreshold0 = 0.01;
+  const backHandThreshold0 = 0.01;
+  const backShoulderThreshold0 = 0.04;
+
+  //Thresholds State 2
+  const momentumThreshold = 0.1;
+
+  //Threshold State 3
+  const sideBodyThreshold3 = 0.05;
+  const sideLegThreshold3 = 0.05;
+  const sideFeetThreshold3 = 0.02;
+  const sideFeetShift = 0.04;
+  const backShoulderThreshold3 = 0.04;
+  const backHipThreshold3 = 0.02;
+  const backFeetThreshold3 = 0.02;
 
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
@@ -27,7 +39,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
       if (exerciseState === 0) {
 
         // Condition 1: Arm Position
-        alignmentController(floorArm[0][0].x, floorArm[0][1].x, floorArm[0][2].x, straightThreshold, floorArm,
+        alignmentController(floorArm[0][0].x, floorArm[0][1].x, floorArm[0][2].x, sideArmThreshold0, floorArm,
           poseLandmarks.armConnector, drawingUtils, handleFeedbackTexts, perspective, "state1sideArmInfo")
 
         // Condition 2: Shoulder Position
@@ -38,15 +50,15 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
           z: floorArm[0][0].z,
         }
 
-        targetController(floorArm[0][2].x, floorArm[0][0].x, targetThreshold, floorArm[0][0], target, ctx,
+        targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThreshold0, floorArm[0][0], target, ctx,
           handleFeedbackTexts, perspective, "state1sideShoulderInfo")
 
       }
       // State 2: Dynamic movement
       else if (exerciseState === 1) {
         // Condition 1: Feet Target
-        momentumController(momentumThreshold, poseLandmarks.hipCenter[0][0].y, poseLandmarks.feetCenter[0][0].y,
-          handleFeedbackTexts, perspective, "state2")
+        momentumController(momentumThreshold, poseLandmarks.hipCenter[0][0].y, poseLandmarks.leftLeg[0][2].y,
+          poseLandmarks.rightLeg[0][2].y, handleFeedbackTexts, perspective, "state2")
       }
       // State 3: Handstand
       else if (exerciseState === 2) {
@@ -66,24 +78,26 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
         ]
 
         advancedAlignmentController(frontBody[0][0].x, frontBody[0][1].x, frontBody[0][2].x, frontBody[0][3].x,
-          shiftThreshold, frontBody,frontBodyConnector, drawingUtils,
+          sideBodyThreshold3, frontBody,frontBodyConnector, drawingUtils,
           handleFeedbackTexts, perspective, "state3sideBodyInfo")
 
         // Condition 2: Leg Position
         doubleAlignmentController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x,
           poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x,
-          straightThreshold, poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils,
+          sideLegThreshold3, poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils,
           handleFeedbackTexts, perspective, "state3sideLegInfo")
 
         // Condition 3: Feet Position
+        const feetShift = (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? sideFeetShift :  -1 * sideFeetShift;
+
         const feetTarget = {
-          x: poseLandmarks.shoulderCenter[0][0].x,
+          x: poseLandmarks.shoulderCenter[0][0].x + feetShift,
           y: poseLandmarks.feetCenter[0][0].y,
           z: poseLandmarks.feetCenter[0][0].z,
         }
 
-        doubleTargetController(poseLandmarks.shoulderCenter[0][0].x, poseLandmarks.leftLeg[0][2].x, poseLandmarks.rightLeg[0][2].x,
-          targetThreshold, feetTarget, poseLandmarks.rightLeg[0][2], poseLandmarks.rightLeg[0][2],
+        doubleTargetController(poseLandmarks.hipCenter[0][0].x + feetShift, poseLandmarks.leftLeg[0][2].x, poseLandmarks.rightLeg[0][2].x,
+          sideFeetThreshold3, feetTarget, poseLandmarks.leftLeg[0][2], poseLandmarks.rightLeg[0][2],
           ctx, handleFeedbackTexts, perspective, "state3sideFeetInfo")
 
       }
@@ -100,11 +114,11 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
           z: floorArm[0][2].z,
         }
 
-        targetController(floorArm[0][0].x, floorArm[0][2].x, targetThreshold, floorArm[0][2], target, ctx,
+        targetController(floorArm[0][0].x, floorArm[0][2].x, backHandThreshold0, floorArm[0][2], target, ctx,
           handleFeedbackTexts, perspective, "state1backArmInfo")
 
         // Condition 2: Shoulder Position
-        shiftController(poseLandmarks.shoulders[0][0].y, poseLandmarks.shoulders[0][1].y, shiftThreshold, poseLandmarks.shoulders,
+        shiftController(poseLandmarks.shoulders[0][0].y, poseLandmarks.shoulders[0][1].y, backShoulderThreshold0, poseLandmarks.shoulders,
           poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, perspective, "state1backShoulderInfo")
 
       }
@@ -115,11 +129,11 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
       // State 3: Handstand
       else if (exerciseState === 2) {
         // Condition 1: Shoulder Position
-        shiftController(poseLandmarks.shoulders[0][0].y, poseLandmarks.shoulders[0][1].y, shiftThreshold, poseLandmarks.shoulders,
+        shiftController(poseLandmarks.shoulders[0][0].y, poseLandmarks.shoulders[0][1].y, backShoulderThreshold3, poseLandmarks.shoulders,
           poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, perspective, "state3backShoulderInfo")
 
         // Condition 2: Hip Position
-        shiftController(poseLandmarks.shoulderCenter[0][0].x, poseLandmarks.hipCenter[0][0].x, shiftThreshold, poseLandmarks.body,
+        shiftController(poseLandmarks.shoulderCenter[0][0].x, poseLandmarks.hipCenter[0][0].x, backHipThreshold3, poseLandmarks.body,
           poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts, perspective, "state3backHipInfo")
 
         // Condition 3: Feet Position
@@ -130,7 +144,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
         }
 
         doubleTargetController(poseLandmarks.shoulderCenter[0][0].x, poseLandmarks.leftLeg[0][2].x, poseLandmarks.rightLeg[0][2].x,
-          targetThreshold, feetTarget, poseLandmarks.rightLeg[0][2], poseLandmarks.rightLeg[0][2],
+          backFeetThreshold3, feetTarget, poseLandmarks.leftLeg[0][2], poseLandmarks.rightLeg[0][2],
           ctx, handleFeedbackTexts, perspective, "state3backFeetInfo")
       }
     }

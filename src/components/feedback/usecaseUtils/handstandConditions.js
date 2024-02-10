@@ -11,9 +11,10 @@ import {
 export default function handstandConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, exerciseState) {
   //Thresholds State 1
   const sideArmThreshold0 = 0.015;
-  const sideShoulderThreshold0 = 0.01;
+  const sideShoulderThresholdBack0 = 0.01;
+  const sideShoulderThresholdFront0 = 0.03;
   const backHandThreshold0 = 0.01;
-  const backShoulderThreshold0 = 0.04;
+  const backShoulderThreshold0 = 0.06;
 
   //Thresholds State 2
   const momentumThreshold = 0.1;
@@ -22,7 +23,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
   const sideBodyThreshold3 = 0.05;
   const sideLegThreshold3 = 0.05;
   const sideFeetThreshold3 = 0.02;
-  const sideFeetShift = 0.04;
+  const sideFeetShift = 0.02;
   const backShoulderThreshold3 = 0.04;
   const backHipThreshold3 = 0.02;
   const backFeetThreshold3 = 0.02;
@@ -30,6 +31,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
   if (bodyLandmarks[0] !== undefined) {
+    const isLeft = poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y;
     const floorArm = (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftArm :  poseLandmarks.rightArm;
     const floorLeg =  (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftLeg :  poseLandmarks.rightLeg;
 
@@ -50,8 +52,23 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
           z: floorArm[0][0].z,
         }
 
-        targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThreshold0, floorArm[0][0], target, ctx,
-          handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+        if (isLeft) {
+          if (floorArm[0][0].x < floorArm[0][2].x) {
+            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdFront0, floorArm[0][0], target, ctx,
+              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+          } else {
+            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdBack0, floorArm[0][0], target, ctx,
+              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+          }
+        } else {
+          if (floorArm[0][0].x < floorArm[0][2].x) {
+            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdBack0, floorArm[0][0], target, ctx,
+              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+          } else {
+            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdFront0, floorArm[0][0], target, ctx,
+              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+          }
+        }
 
       }
       // State 2: Dynamic movement
@@ -88,7 +105,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
           handleFeedbackTexts, perspective, "state3sideLegInfo")
 
         // Condition 3: Feet Position
-        const feetShift = (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? sideFeetShift :  -1 * sideFeetShift;
+        const feetShift = isLeft? sideFeetShift : (-1 * sideFeetShift);
 
         const feetTarget = {
           x: poseLandmarks.shoulderCenter[0][0].x + feetShift,

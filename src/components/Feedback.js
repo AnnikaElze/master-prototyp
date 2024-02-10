@@ -23,6 +23,11 @@ function Feedback (props) {
   const [feedbackTexts1, setFeedbackTexts1] = useState({});
   const [feedbackTexts2, setFeedbackTexts2] = useState({});
 
+  const [start, setStart] = useState(false);
+  setInterval(() => {
+    setStart(true);
+  }, 10000);
+
   const audio = new Audio(sound);
   audio.loop = false;
 
@@ -72,12 +77,12 @@ function Feedback (props) {
             <div className="feedbackGridViewerItem" id="feedbackViewer1">
               <TextViewer feedbackTexts={feedbackTexts1} controlFeedbackTexts={feedbackTexts2}
                           usecase={props.usecase} handleExerciseState={handleExerciseState}
-                          exerciseState={exerciseState} textViewer={1}/>
+                          exerciseState={exerciseState} textViewer={1} start={start}/>
             </div>
             <div className="feedbackGridViewerItem" id="feedbackViewer2">
               <TextViewer feedbackTexts={feedbackTexts2} controlFeedbackTexts={feedbackTexts1}
                           usecase={props.usecase} handleExerciseState={handleExerciseState}
-                          exerciseState={exerciseState} textViewer={2}/>
+                          exerciseState={exerciseState} textViewer={2} start={start}/>
             </div>
           </div>
         </>

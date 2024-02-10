@@ -27,8 +27,9 @@ function TextViewer(props) {
   if (props.usecase === "Quadrizeps Dehnung") {
     // State 1: Pose Correction
     if (props.exerciseState === 0) {
-      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "lunge");
-
+      if (props.start){
+        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "lunge");
+      }
       return (
         <>
           {Object.keys(props.feedbackTexts).map(key => (
@@ -70,7 +71,9 @@ function TextViewer(props) {
   else {
     // State 1: Starting Position, Handstand Position
     if (props.exerciseState === 0) {
-      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
+      if (props.start) {
+        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
+      }
 
       return (
         <>

@@ -16,16 +16,19 @@ import {
  *                alignmentController - checks the difference between three values
  */
 
-export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts) {
+export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, state) {
 
   //Thresholds
-  const sideKneeAngleThreshold = 0.002;
+  const sideKneeAngleThreshold0 = 0.01;
+  const sideKneeAngleThreshold1 = 0.02;
   const sideHipThreshold = 0.04;
-  const sideBodyThreshold = 0.01;
+  const sideBodyThreshold0 = 0.01;
+  const sideBodyThreshold1 = 0.02;
 
   const backLegThreshold = 0.03;
   const backHipThreshold = 0.05;
-  const backBodyThreshold = 0.01;
+  const backBodyThreshold0 = 0.01;
+  const backBodyThreshold1 = 0.02;
 
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
@@ -37,6 +40,8 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
       const isLeftSide = poseLandmarks.leftLeg[0][1].y < poseLandmarks.rightLeg[0][1].y;
 
       // Condition 1: Leg Position
+      const sideKneeAngleThreshold = (state === 0)? sideKneeAngleThreshold0 : sideKneeAngleThreshold1;
+
       doubleAngleController(sideKneeAngleThreshold, isLeftSide,
         poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx,
         handleFeedbackTexts, perspective, "sideLegInfo")
@@ -47,6 +52,8 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
         perspective, "sideHipInfo");
 
       // Condition 3: Upper Body Position
+      const sideBodyThreshold = (state === 0)? sideBodyThreshold0 : sideBodyThreshold1;
+
       const target = {
         x: poseLandmarks.hipCenter[0][0].x,
         y: poseLandmarks.shoulderCenter[0][0].y,
@@ -71,6 +78,8 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
         perspective, "backHipInfo");
 
       // Condition 3: Upper Body Position
+      const backBodyThreshold = (state === 0)? backBodyThreshold0 : backBodyThreshold1;
+
       const target = {
         x: poseLandmarks.hipCenter[0][0].x,
         y: poseLandmarks.shoulderCenter[0][0].y,

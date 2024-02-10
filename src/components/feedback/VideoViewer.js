@@ -33,15 +33,9 @@ function VideoViewer (props) {
   }
 
   function Overlay (feedbackTypes) {
-    if (feedbackTypes.includes('overlay')){
-      if (props.excerciseState === 0) {
-        return "feedbackCanvas"
-      } else if (props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 1){
-        return "feedbackCanvasDisabled"
-      } else if (props.usecase === "Pole Handstand") {
-        return "feedbackCanvas"
-      }
-    } else return "feedbackCanvasDisabled"
+    if (!feedbackTypes.includes('overlay') || (props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 2)) {
+      return "feedbackCanvasDisabled"
+    } else return "feedbackCanvas"
   }
 
   function DrawLandmarks (bodyLandmarks, state) {
@@ -56,7 +50,7 @@ function VideoViewer (props) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     if (props.usecase === "Quadrizeps Dehnung") {
-      lungeConditions(ctx, drawingUtils, props.perspective, bodyLandmarks, props.handleFeedbackTexts);
+      lungeConditions(ctx, drawingUtils, props.perspective, bodyLandmarks, props.handleFeedbackTexts, state);
     } else if (props.usecase === "Pole Handstand") {
       handstandConditions(ctx, drawingUtils, props.perspective, bodyLandmarks, props.handleFeedbackTexts, state);
     } else {

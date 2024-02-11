@@ -19,15 +19,15 @@ import {
 export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, state) {
 
   //Thresholds
-  const sideKneeAngleThreshold0 = 0.01;
-  const sideKneeAngleThreshold1 = 0.02;
+  const sideKneeAngleThreshold0 = 7;
+  const sideKneeAngleThreshold1 = 30;
   const sideHipThreshold = 0.04;
   const sideBodyThreshold0 = 0.01;
   const sideBodyThreshold1 = 0.02;
 
   const backLegThreshold = 0.03;
   const backHipThreshold = 0.05;
-  const backBodyThreshold0 = 0.01;
+  const backBodyThreshold0 = 0.015;
   const backBodyThreshold1 = 0.02;
 
   const poseLandmarks = PoseLandmarks(bodyLandmarks);

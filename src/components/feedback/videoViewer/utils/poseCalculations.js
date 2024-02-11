@@ -22,17 +22,29 @@ export function doubleAngleController (threshold, isLeftSide, landmarks1, landma
   const scalarProduct1 = firstLimb1.x * secondLimb1.x + firstLimb1.y * secondLimb1.y;
   const scalarProduct2 = firstLimb2.x * secondLimb2.x + firstLimb2.y * secondLimb2.y;
 
-  if (Math.abs(scalarProduct1) > threshold) {
+  const magnitudeFirstLimb1 = Math.sqrt(firstLimb1.x * firstLimb1.x + firstLimb1.y * firstLimb1.y);
+  const magnitudeSecondLimb1 = Math.sqrt(secondLimb1.x * secondLimb1.x + secondLimb1.y * secondLimb1.y);
+
+  const cosTheta1 = scalarProduct1 / (magnitudeFirstLimb1 * magnitudeSecondLimb1);
+  const angle1 = Math.acos(cosTheta1) * (180 / Math.PI);
+
+  const magnitudeFirstLimb2 = Math.sqrt(firstLimb2.x * firstLimb2.x + firstLimb2.y * firstLimb2.y);
+  const magnitudeSecondLimb2 = Math.sqrt(secondLimb2.x * secondLimb2.x + secondLimb2.y * secondLimb2.y);
+
+  const cosTheta2 = scalarProduct2 / (magnitudeFirstLimb2 * magnitudeSecondLimb2);
+  const angle2 = Math.acos(cosTheta2) * (180 / Math.PI);
+
+  if (Math.abs(angle1 - 90) > threshold) {
     angleOverlay(red, isLeftSide, landmarks1, connector, drawingUtils, ctx);
     handleFeedbackTexts(perspective, feedback, "warning");
-    if (Math.abs(scalarProduct2) > threshold) {
+    if (Math.abs(angle2 - 90) > threshold) {
       angleOverlay(red, isLeftSide, landmarks2, connector, drawingUtils, ctx);
     } else {
       angleOverlay(green, isLeftSide, landmarks2, connector, drawingUtils, ctx);
     }
   } else {
     angleOverlay(green, isLeftSide, landmarks1, connector, drawingUtils, ctx);
-    if (Math.abs(scalarProduct2) > threshold) {
+    if (Math.abs(angle2 - 90) > threshold) {
       angleOverlay(red, isLeftSide, landmarks2, connector, drawingUtils, ctx);
       handleFeedbackTexts(perspective, feedback, "warning");
     } else {
@@ -56,12 +68,21 @@ export function shiftController (a, b, threshold, landmarks, connector, drawingU
   }
 }
 
-export function alignmentController (a, b, c, threshold, landmarks, connector, drawingUtils,
-                                     handleFeedbackTexts, perspective, feedback) {
-  const shift1 = Math.abs(a - b);
-  const shift2 = Math.abs(b - c);
+export function straightController (landmarks, threshold, connector, drawingUtils,
+                                    handleFeedbackTexts, perspective, feedback) {
+  const firstLimb = limbCalculation(landmarks[0][0], landmarks[0][1])
+  const secondLimb = limbCalculation(landmarks[0][2], landmarks[0][1])
 
-  if (shift1 > threshold || shift2 > threshold) {
+  const scalarProduct = firstLimb.x * secondLimb.x + firstLimb.y * secondLimb.y;
+
+  const magnitudeFirstLimb = Math.sqrt(firstLimb.x * firstLimb.x + firstLimb.y * firstLimb.y);
+  const magnitudeSecondLimb = Math.sqrt(secondLimb.x * secondLimb.x + secondLimb.y * secondLimb.y);
+
+  const cosTheta = scalarProduct / (magnitudeFirstLimb * magnitudeSecondLimb);
+
+  const angle = Math.acos(cosTheta) * (180 / Math.PI);
+
+  if (Math.abs(angle - 180) > threshold) {
     skeletonOverlay(redOpaque, landmarks, connector, drawingUtils);
     handleFeedbackTexts(perspective, feedback, "warning");
   } else {

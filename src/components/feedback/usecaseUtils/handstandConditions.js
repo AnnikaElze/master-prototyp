@@ -1,18 +1,18 @@
 import PoseLandmarks from "../videoViewer/utils/poseLandmarks";
 import {
   advancedAlignmentController,
-  alignmentController, doubleAlignmentController,
+  doubleAlignmentController,
   doubleTargetController,
   momentumController,
-  shiftController,
+  shiftController, straightController,
   targetController
 } from "../videoViewer/utils/poseCalculations";
 
 export default function handstandConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, exerciseState) {
   //Thresholds State 1
-  const sideArmThreshold0 = 0.015;
-  const sideShoulderThresholdBack0 = 0.01;
-  const sideShoulderThresholdFront0 = 0.03;
+  const sideArmThreshold0 = 15;
+  const sideShoulderShift0 = 0.025;
+  const sideShoulderThreshold0 = 0.02;
   const backHandThreshold0 = 0.01;
   const backShoulderThreshold0 = 0.06;
 
@@ -23,7 +23,7 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
   const sideBodyThreshold3 = 0.05;
   const sideLegThreshold3 = 0.05;
   const sideFeetThreshold3 = 0.02;
-  const sideFeetShift = 0.02;
+  const sideFeetShift = 0.025;
   const backShoulderThreshold3 = 0.04;
   const backHipThreshold3 = 0.02;
   const backFeetThreshold3 = 0.02;
@@ -31,9 +31,11 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
   if (bodyLandmarks[0] !== undefined) {
-    const isLeft = poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y;
-    const floorArm = (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftArm :  poseLandmarks.rightArm;
-    const floorLeg =  (poseLandmarks.leftArm[0][2].y > poseLandmarks.leftArm[0][0].y)? poseLandmarks.leftLeg :  poseLandmarks.rightLeg;
+    const isLeft = poseLandmarks.leftArm[0][2].y > poseLandmarks.rightArm[0][2].y;
+
+    const floorArm = isLeft? poseLandmarks.leftArm :  poseLandmarks.rightArm;
+    const floorLeg =  isLeft? poseLandmarks.leftLeg :  poseLandmarks.rightLeg;
+    const floorShoulderX = isLeft? (-1 * sideShoulderShift0) : sideShoulderShift0;
 
     // Perspective 1: Side view
     if (perspective === 1){
@@ -41,34 +43,19 @@ export default function handstandConditions (ctx, drawingUtils, perspective, bod
       if (exerciseState === 0) {
 
         // Condition 1: Arm Position
-        alignmentController(floorArm[0][0].x, floorArm[0][1].x, floorArm[0][2].x, sideArmThreshold0, floorArm,
-          poseLandmarks.armConnector, drawingUtils, handleFeedbackTexts, perspective, "state1sideArmInfo")
+        straightController(floorArm, sideArmThreshold0, poseLandmarks.armConnector, drawingUtils,
+          handleFeedbackTexts, perspective, "state1sideArmInfo")
 
         // Condition 2: Shoulder Position
-
         const target = {
-          x: floorArm[0][2].x,
+          x: floorArm[0][2].x + floorShoulderX,
           y: floorArm[0][0].y,
           z: floorArm[0][0].z,
         }
 
-        if (isLeft) {
-          if (floorArm[0][0].x < floorArm[0][2].x) {
-            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdFront0, floorArm[0][0], target, ctx,
-              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
-          } else {
-            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdBack0, floorArm[0][0], target, ctx,
-              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
-          }
-        } else {
-          if (floorArm[0][0].x < floorArm[0][2].x) {
-            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdBack0, floorArm[0][0], target, ctx,
-              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
-          } else {
-            targetController(floorArm[0][2].x, floorArm[0][0].x, sideShoulderThresholdFront0, floorArm[0][0], target, ctx,
-              handleFeedbackTexts, perspective, "state1sideShoulderInfo")
-          }
-        }
+        targetController(floorArm[0][2].x + floorShoulderX, floorArm[0][0].x, sideShoulderThreshold0, floorArm[0][0], target, ctx,
+          handleFeedbackTexts, perspective, "state1sideShoulderInfo")
+
 
       }
       // State 2: Dynamic movement

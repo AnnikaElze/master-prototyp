@@ -12,12 +12,12 @@ import {checkHandstandState} from "./usecaseUtils/handstandStates";
  * @return TextFiles in the type and order required by the current exerciseState
  */
 
-function checkState (feedbackTexts, controlFeedbackTexts, handleExerciseState, exerciseState, usecase) {
+function checkState (feedbackTexts, controlFeedbackTexts, handleExerciseState, exerciseState, usecase, perspective) {
   const checkFeedbackTexts = { ...feedbackTexts, ...controlFeedbackTexts };
   if (usecase === "lunge") {
-    handleExerciseState(checkLungePosition(checkFeedbackTexts, exerciseState));
+    handleExerciseState(checkLungePosition(checkFeedbackTexts, exerciseState), perspective);
   } else {
-    handleExerciseState(checkHandstandState(checkFeedbackTexts, exerciseState));
+    handleExerciseState(checkHandstandState(checkFeedbackTexts, exerciseState), perspective);
   }
 
 }
@@ -28,7 +28,7 @@ function TextViewer(props) {
     // State 1: Pose Correction
     if (props.exerciseState === 0) {
       if (props.start){
-        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "lunge");
+        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "lunge", props.textViewer);
       }
       return (
         <>
@@ -72,7 +72,7 @@ function TextViewer(props) {
     // State 1: Starting Position, Handstand Position
     if (props.exerciseState === 0) {
       if (props.start) {
-        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
+        checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand", props.textViewer);
       }
 
       return (
@@ -87,7 +87,7 @@ function TextViewer(props) {
     }
     // State 2: Dynamic movement
     else if (props.exerciseState === 1 && props.textViewer === 1) {
-      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand");
+      checkState(props.feedbackTexts, props.controlFeedbackTexts, props.handleExerciseState, props.exerciseState, "handstand", props.textViewer);
 
       return (
         <>

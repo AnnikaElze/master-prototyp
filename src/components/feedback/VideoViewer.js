@@ -33,9 +33,13 @@ function VideoViewer (props) {
   }
 
   function Overlay (feedbackTypes) {
-    if (!feedbackTypes.includes('overlay') || (props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 2)) {
-      return "feedbackCanvasDisabled"
-    } else return "feedbackCanvas"
+    if (feedbackTypes.includes('overlay')){
+      if (props.usecase === "Quadrizeps Dehnung" && props.excerciseState === 2) {
+        return "feedbackCanvasDisabled"
+      } else if (props.usecase === "Pole Handstand" && props.excerciseState === 1) {
+        return "feedbackCanvasDisabled"
+      } else return "feedbackCanvas"
+    } else return "feedbackCanvasDisabled"
   }
 
   function DrawLandmarks (bodyLandmarks, state) {
@@ -76,7 +80,6 @@ function VideoViewer (props) {
       </>
     )
   } else if (props.excerciseState === 2){
-    console.log(props.excerciseState)
     return (
       <>
         <BodyLandmarks2 camera={props.camera} handleState={handleState2}/>

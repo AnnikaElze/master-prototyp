@@ -19,7 +19,7 @@ function Countdown (props) {
       if (countdown <= 0) {
         clearInterval(interval);
 
-        props.handleExerciseState(props.exerciseState + 1);
+        props.handleExerciseState(props.exerciseState + 1, 1);
       }
     }, 1000);
 

@@ -28,9 +28,6 @@ function Feedback (props) {
     setStart(true);
   }, 10000);
 
-  const audio = new Audio(sound);
-  audio.loop = false;
-
   const handleFeedbackType = (event, newFeedbackType) => {
     setFeedbackTypes(newFeedbackType);
   };
@@ -49,12 +46,15 @@ function Feedback (props) {
     }
   }
 
-  const handleExerciseState = (newState) => {
+  const handleExerciseState = (newState, perspective) => {
     if (newState !== exerciseState){
       setFeedbackTexts1({});
       setFeedbackTexts2({});
-      audio.play();
       setExerciseState(newState);
+      if (perspective === 1){
+        const audio = new Audio(sound);
+        audio.play();
+      }
     }
   }
 

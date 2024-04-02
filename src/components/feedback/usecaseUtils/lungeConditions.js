@@ -6,19 +6,14 @@ import {
 } from "../videoViewer/utils/poseCalculations";
 
 /**
- * @parent VideoViewer
- * @props ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts
- * @creats thresholds
- * @helpfunctions PoseLandmarks - provides pose landmark groups from body landmarks by mediapipe
- *                angleController - checks if the angle between two limbs is 90 degree
- *                shiftController - checks the difference between two values
- *                targetController - checks the distance to a target coordinate
- *                alignmentController - checks the difference between three values
+ * This function checks certain conditions for the stretching exercise via the bodyLandmarks.
+ *
+ * An overview of the conditions can be found on page 36 of the master's thesis.
  */
 
 export default function lungeConditions (ctx, drawingUtils, perspective, bodyLandmarks, handleFeedbackTexts, state) {
 
-  //Thresholds
+  // Thresholds
   const sideKneeAngleThreshold0 = 7;
   const sideKneeAngleThreshold1 = 30;
   const sideHipThreshold = 0.04;
@@ -30,28 +25,30 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
   const backBodyThreshold0 = 0.015;
   const backBodyThreshold1 = 0.02;
 
+  // Create landmarks that are relevant for viewing from the bodyLandmarks of MediaPipe.
   const poseLandmarks = PoseLandmarks(bodyLandmarks);
 
   if (bodyLandmarks[0] !== undefined) {
 
-    // Perspective 1: Side view of the open side
+    // Perspective 1: Side view
     if (perspective === 1) {
 
+      // Check whether leftLeg or rightLeg is the front leg
       const isLeftSide = poseLandmarks.leftLeg[0][1].y < poseLandmarks.rightLeg[0][1].y;
 
-      // Condition 1: Leg Position
+      // Condition 1.1
       const sideKneeAngleThreshold = (state === 0)? sideKneeAngleThreshold0 : sideKneeAngleThreshold1;
 
       doubleAngleController(sideKneeAngleThreshold, isLeftSide,
         poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils, ctx,
         handleFeedbackTexts, perspective, "sideLegInfo")
 
-      // Condition 2: Hip Position
+      // Condition 1.2
       shiftController(poseLandmarks.hip[0][0].x, poseLandmarks.hip[0][1].x, sideHipThreshold,
         poseLandmarks.hip, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts,
         perspective, "sideHipInfo");
 
-      // Condition 3: Upper Body Position
+      // Condition 1.3
       const sideBodyThreshold = (state === 0)? sideBodyThreshold0 : sideBodyThreshold1;
 
       const target = {
@@ -66,18 +63,18 @@ export default function lungeConditions (ctx, drawingUtils, perspective, bodyLan
 
     // Perspective 2: Back view
     else {
-      // Condition 1: Leg Position
+      // Condition 1.4
       doubleAlignmentController(poseLandmarks.leftLeg[0][0].x, poseLandmarks.leftLeg[0][1].x, poseLandmarks.leftLeg[0][2].x,
         poseLandmarks.rightLeg[0][0].x, poseLandmarks.rightLeg[0][1].x, poseLandmarks.rightLeg[0][2].x,
         backLegThreshold, poseLandmarks.leftLeg, poseLandmarks.rightLeg, poseLandmarks.legConnector, drawingUtils,
         handleFeedbackTexts, perspective, "backLegInfo")
 
-      // Condition 2: Hip Position
+      // Condition 1.5
       shiftController(poseLandmarks.hip[0][0].y, poseLandmarks.hip[0][1].y, backHipThreshold,
         poseLandmarks.hip, poseLandmarks.limbConnector, drawingUtils, handleFeedbackTexts,
         perspective, "backHipInfo");
 
-      // Condition 3: Upper Body Position
+      // Condition 1.6
       const backBodyThreshold = (state === 0)? backBodyThreshold0 : backBodyThreshold1;
 
       const target = {

@@ -1,3 +1,8 @@
+/** File overview
+ * This file contains functions to create the video overlay.
+ * These functions are called from the functions in the poseCalculations.js file
+ */
+
 export function skeletonOverlay (color, landmarks, connector, drawingUtils) {
   landmarks.forEach(landmark => {
     drawingUtils.drawConnectors(landmark, connector, {color: color, lineWidth: 1.5});

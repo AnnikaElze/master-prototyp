@@ -3,10 +3,7 @@ import {FilesetResolver, PoseLandmarker} from "@mediapipe/tasks-vision";
 import pose_landmarker_task from "../../../../shared/models/pose_landmarker_full.task";
 
 /**
- * @parent VideoViewer
- * @props camera, drawLandmarks
- * @creats  videoRef - for calling the video
- * @return video (with PoseLandmarker by mediapipe for body tracking)
+ * Comments for this component can be found in BodyLandmarks0.js
  */
 
 function BodyLandmarks1 (props) {

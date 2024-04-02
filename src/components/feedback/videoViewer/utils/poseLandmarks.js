@@ -1,5 +1,7 @@
 /**
- * Documentation of body landmarks delivered by mediapipe: https://developers.google.com/mediapipe/solutions/vision/pose_landmarker
+ * Documentation of body landmarks by MediaPipe:
+ * https://developers.google.com/mediapipe/solutions/vision/pose_landmarker
+ * (accessed on 02.04.2024)
  */
 
 export default function PoseLandmarks (bodyLandmarks) {

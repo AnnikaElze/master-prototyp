@@ -19,7 +19,7 @@ export const Lunge = {
     success: "Beine"
   },
   backHipInfo: {
-    warning: "Hüfte: Beide Hüftknochen sollten auf der selbern Höhe sein.",
+    warning: "Hüfte: Beide Hüftknochen sollten auf der selben Höhe sein.",
     success: "Hüfte"
   },
   backBodyInfo: {
@@ -29,7 +29,7 @@ export const Lunge = {
 
   // State 2: Stretching
   correctInfo: "Du hast die korrekte Körperhaltung eingenommen. Sehr gut!",
-  stretchingInfo: "Kippe die Hüfte nach hinten indem du einen runden Rücken machst.\n" +
+  stretchingInfo: "Kippe die Hüfte nach hinten, indem du einen runden Rücken machst.\n" +
     "Um die Dehnung zu intensivieren kannst du die Hüfte leicht nach vorn schieben, " +
     "aber achte darauf, nicht in ein Hohlkreuz zu fallen.\n" +
     "Du solltest auf der Vorderseite deines hinteren Oberschenkels eine Dehnung spüren.",
@@ -45,7 +45,7 @@ export const Handstand = {
     success: "Standarm"
   },
   state1sideShoulderInfo: {
-    warning: "Schulter: Positioniere deine Schulter über dem Handgelenk",
+    warning: "Schulter: Positioniere deine Schulter über dem Handgelenk!",
     success: "Schulter"
   },
 

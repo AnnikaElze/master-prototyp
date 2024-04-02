@@ -5,14 +5,12 @@ import SignalIcon from "@mui/icons-material/Notifications";
 import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import theme from "../../Theme";
 
-/**
- * @parent FeedbackController
- * @props feedbackTypes, handleFeedbackType
- * @return ToggleButtonGroup to toggle the feedbackType in Feedback
+/** Component overview
+ * The FeedbackTypeController provides buttons that trigger the handleFeedbackTypes function
+ * in the Feedback component.
  */
 
 function FeedbackTypeController(props) {
-
   return(
     <ControllerToggleUnit feedbackTypes={props.feedbackTypes} handleFeedbackType={props.handleFeedbackType}/>
   )
